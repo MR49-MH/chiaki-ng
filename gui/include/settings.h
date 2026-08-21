@@ -243,6 +243,8 @@ class Settings : public QObject
 		void SetVSyncEnabled(bool enabled)     { settings.setValue("settings/vsync", enabled); }
 		bool GetShmFrameOutput() const         { return settings.value("settings/shm_frame_output", false).toBool(); }
 		void SetShmFrameOutput(bool enabled)   { settings.setValue("settings/shm_frame_output", enabled); }
+		QString GetLanguage() const            { return settings.value("settings/language", "system").toString(); }
+		void SetLanguage(const QString &lang)  { settings.setValue("settings/language", lang); }
 		uint32_t GetLogLevelMask();
 
 		bool GetHideCursor() const				{ return settings.value("settings/hide_cursor", true).toBool(); }

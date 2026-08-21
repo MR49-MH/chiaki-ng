@@ -214,6 +214,17 @@ void QmlSettings::setShmFrameOutput(bool enabled)
     emit shmFrameOutputChanged();
 }
 
+QString QmlSettings::language() const
+{
+    return settings->GetLanguage();
+}
+
+void QmlSettings::setLanguage(const QString &lang)
+{
+    settings->SetLanguage(lang);
+    emit languageChanged();
+}
+
 int QmlSettings::rumbleHapticsIntensity() const
 {
     return static_cast<int>(settings->GetRumbleHapticsIntensity());
