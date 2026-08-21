@@ -5,7 +5,9 @@
 
 #include <QtGlobal>
 
+#include <atomic>
 #include <cstdint>
+#include <mutex>
 
 struct AVFrame;
 
@@ -31,10 +33,14 @@ class ShmFramePublisher
 		// Enabling does not allocate; the mapping is created lazily on the
 		// first published frame once size/format are known.
 		void set_enabled(bool enabled);
-		bool enabled() const { return enabled_; }
+		bool enabled() const { return enabled_.load(std::memory_order_relaxed); }
 
 		// Publish one frame. Accepts hardware frames (a GPU->CPU transfer is
 		// performed internally). Never throws; failures are counted only.
+		//
+		// Thread-safety: publish() runs on the frame thread while
+		// set_enabled(false) may arrive on the GUI thread at session quit;
+		// mutex_ serializes mapping teardown against in-flight publishes.
 		void publish(const AVFrame *frame, int64_t pts_us);
 
 		uint64_t published_frames() const { return published_frames_; }
@@ -46,10 +52,11 @@ class ShmFramePublisher
 		ShmFramePublisher(const ShmFramePublisher &) = delete;
 		ShmFramePublisher &operator=(const ShmFramePublisher &) = delete;
 
-		bool configure(uint32_t width, uint32_t height, uint32_t pix_fmt);
-		void shutdown();
+		// Both called with mutex_ held.
+		bool configure_locked(uint32_t width, uint32_t height, uint32_t pix_fmt);
+		void shutdown_locked();
 
-		bool enabled_ = false;
+		std::atomic<bool> enabled_{false};
 		bool configured_ = false;
 		uint32_t width_ = 0;
 		uint32_t height_ = 0;
@@ -61,6 +68,19 @@ class ShmFramePublisher
 		uint32_t plane_copy_bytes_[4] = {};
 		uint64_t published_frames_ = 0;
 		uint64_t dropped_frames_ = 0;
+
+		// Guards mapping lifetime and the seqlock write section. Held across
+		// configure/shutdown and the per-frame copy so a concurrent
+		// set_enabled(false) can never unmap a view being written.
+		std::mutex mutex_;
+		// Geometry of the last failed configure attempt: retrying every frame
+		// would spam the log at frame rate, so retries wait for a geometry
+		// change or a 5s cooldown (transient causes may clear, e.g. a stale
+		// external reader holding the previous named section).
+		uint32_t last_fail_w_ = 0;
+		uint32_t last_fail_h_ = 0;
+		uint32_t last_fail_fmt_ = UINT32_MAX;
+		uint64_t last_fail_qpc_us_ = 0;
 
 #if defined(Q_OS_WINDOWS)
 		void *mapping_handle_ = nullptr;
