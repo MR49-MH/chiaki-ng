@@ -921,6 +921,16 @@ DialogView {
 
                     Label {
                         Layout.alignment: Qt.AlignRight
+                        text: qsTr("Shared Memory Frames:")
+                    }
+
+                    C.CheckBox {
+                        checked: Chiaki.settings.shmFrameOutput
+                        onClicked: Chiaki.settings.shmFrameOutput = checked
+                    }
+
+                    Label {
+                        Layout.alignment: Qt.AlignRight
                         text: qsTr("(Unchecked)")
                     }
 

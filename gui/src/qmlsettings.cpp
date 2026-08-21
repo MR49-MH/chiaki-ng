@@ -244,6 +244,17 @@ void QmlSettings::setVSyncEnabled(bool enabled)
     emit vSyncEnabledChanged();
 }
 
+bool QmlSettings::shmFrameOutput() const
+{
+    return settings->GetShmFrameOutput();
+}
+
+void QmlSettings::setShmFrameOutput(bool enabled)
+{
+    settings->SetShmFrameOutput(enabled);
+    emit shmFrameOutputChanged();
+}
+
 int QmlSettings::rumbleHapticsIntensity() const
 {
     return static_cast<int>(settings->GetRumbleHapticsIntensity());

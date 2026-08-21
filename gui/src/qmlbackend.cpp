@@ -6,6 +6,9 @@
 #include "psnaccountid.h"
 #include "psntoken.h"
 #include "systemdinhibit.h"
+#ifdef Q_OS_WINDOWS
+#include "shmframepublisher.h"
+#endif
 #include "chiaki/remote/holepunch.h"
 #ifdef Q_OS_MACOS
 #include "macWakeSleep.h"
@@ -1104,6 +1107,10 @@ void QmlBackend::createSession(const StreamSessionConnectInfo &connect_info)
         return;
     }
 
+#ifdef Q_OS_WINDOWS
+    ShmFramePublisher::instance().set_enabled(settings->GetShmFrameOutput());
+#endif
+
     connect(session, &StreamSession::FfmpegFrameAvailable, frame_thread->parent(), [this, use_opengl_renderer]() {
         ChiakiFfmpegDecoder *decoder = session->GetFfmpegDecoder();
         if (!decoder) {
@@ -1132,6 +1139,10 @@ void QmlBackend::createSession(const StreamSessionConnectInfo &connect_info)
                 << " pts=" << frame.pts;
         }
 
+#ifdef Q_OS_WINDOWS
+        ShmFramePublisher::instance().publish(frame.frame, frame.pts);
+#endif
+
         if (pending_recovered_frame.fetchAndStoreRelaxed(0) != 0) {
             frame.recovered = true;
         }
@@ -1158,6 +1169,9 @@ void QmlBackend::createSession(const StreamSessionConnectInfo &connect_info)
         chiaki_log_mutex.lock();
         chiaki_log_ctx = nullptr;
         chiaki_log_mutex.unlock();
+#ifdef Q_OS_WINDOWS
+        ShmFramePublisher::instance().set_enabled(false);
+#endif
         pending_recovered_frame.storeRelaxed(0);
         {
             QMutexLocker locker(&hw_transfer_state_mutex);
