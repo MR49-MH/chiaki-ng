@@ -102,19 +102,22 @@ ShmFramePublisher &ShmFramePublisher::instance()
 
 void ShmFramePublisher::set_enabled(bool enabled)
 {
-	if(enabled_ == enabled)
+#ifdef Q_OS_WINDOWS
+	std::lock_guard<std::mutex> lock(mutex_);
+#endif
+	if(enabled_.load(std::memory_order_relaxed) == enabled)
 		return;
-	enabled_ = enabled;
+	enabled_.store(enabled, std::memory_order_relaxed);
 #ifdef Q_OS_WINDOWS
 	if(!enabled_)
-		shutdown();
-	qInfo() << "ShmFramePublisher:" << (enabled_ ? "enabled" : "disabled");
+		shutdown_locked();
+	qInfo() << "ShmFramePublisher:" << (enabled ? "enabled" : "disabled");
 #endif
 }
 
 #ifdef Q_OS_WINDOWS
 
-bool ShmFramePublisher::configure(uint32_t width, uint32_t height, uint32_t pix_fmt)
+bool ShmFramePublisher::configure_locked(uint32_t width, uint32_t height, uint32_t pix_fmt)
 {
 	switch(pix_fmt)
 	{
@@ -158,6 +161,18 @@ bool ShmFramePublisher::configure(uint32_t width, uint32_t height, uint32_t pix_
 		qWarning() << "ShmFramePublisher: CreateFileMappingW failed" << GetLastError();
 		return false;
 	}
+	if(GetLastError() == ERROR_ALREADY_EXISTS)
+	{
+		// A section with this name already exists (stale external reader from
+		// a previous session with a different resolution, or a second
+		// chiaki-ng instance). Windows ignores our size for existing sections,
+		// so adopting it could mean writing through a too-small object.
+		CloseHandle(mapping_handle_);
+		mapping_handle_ = nullptr;
+		qWarning() << "ShmFramePublisher: mapping" << MAPPING_NAME
+				   << "already exists (stale reader or second instance?), refusing";
+		return false;
+	}
 	view_ = MapViewOfFile(mapping_handle_, FILE_MAP_ALL_ACCESS, 0, 0, map_size);
 	if(!view_)
 	{
@@ -193,7 +208,7 @@ bool ShmFramePublisher::configure(uint32_t width, uint32_t height, uint32_t pix_
 	if(!event_handle_)
 	{
 		qWarning() << "ShmFramePublisher: CreateEventW failed" << GetLastError();
-		shutdown();
+		shutdown_locked();
 		return false;
 	}
 
@@ -206,7 +221,7 @@ bool ShmFramePublisher::configure(uint32_t width, uint32_t height, uint32_t pix_
 	return true;
 }
 
-void ShmFramePublisher::shutdown()
+void ShmFramePublisher::shutdown_locked()
 {
 	configured_ = false;
 	if(view_)
@@ -225,9 +240,11 @@ void ShmFramePublisher::shutdown()
 
 void ShmFramePublisher::publish(const AVFrame *frame, int64_t pts_us)
 {
-	if(!enabled_ || !frame)
+	if(!enabled_.load(std::memory_order_relaxed) || !frame)
 		return;
 
+	// GPU->CPU transfer runs outside the lock: it can take milliseconds and
+	// must not stall a concurrent set_enabled(false) on the GUI thread.
 	const AVFrame *src = frame;
 	AVFrame *sw_tmp = nullptr;
 	if(frame->hw_frames_ctx) // zero-copy direct render path: frame lives in GPU memory
@@ -262,16 +279,42 @@ void ShmFramePublisher::publish(const AVFrame *frame, int64_t pts_us)
 		return;
 	}
 
-	if(!configured_ || width_ != static_cast<uint32_t>(src->width) ||
-		height_ != static_cast<uint32_t>(src->height) || pix_fmt_ != fmt_code)
+	std::lock_guard<std::mutex> lock(mutex_);
+
+	// Session may have quit while we were transferring from GPU memory.
+	if(!enabled_.load(std::memory_order_relaxed))
 	{
-		shutdown();
-		if(!configure(static_cast<uint32_t>(src->width), static_cast<uint32_t>(src->height), fmt_code))
+		av_frame_free(&sw_tmp);
+		return;
+	}
+
+	const uint32_t w = static_cast<uint32_t>(src->width);
+	const uint32_t h = static_cast<uint32_t>(src->height);
+	if(!configured_ || width_ != w || height_ != h || pix_fmt_ != fmt_code)
+	{
+		// Don't retry a failing geometry at frame rate: wait for the geometry
+		// to change or a 5s cooldown (a stale external reader holding the
+		// previous named section may disconnect in the meantime).
+		const bool failed_before_same = last_fail_fmt_ == fmt_code && last_fail_w_ == w && last_fail_h_ == h;
+		const bool cooldown_over = qpc_now_us() - last_fail_qpc_us_ >= 5000000LL;
+		if(failed_before_same && !cooldown_over)
 		{
 			++dropped_frames_;
 			av_frame_free(&sw_tmp);
 			return;
 		}
+		shutdown_locked();
+		if(!configure_locked(w, h, fmt_code))
+		{
+			last_fail_w_ = w;
+			last_fail_h_ = h;
+			last_fail_fmt_ = fmt_code;
+			last_fail_qpc_us_ = qpc_now_us();
+			++dropped_frames_;
+			av_frame_free(&sw_tmp);
+			return;
+		}
+		last_fail_fmt_ = UINT32_MAX;
 	}
 
 	auto *hdr = reinterpret_cast<ShmHeader *>(base_);
@@ -279,7 +322,7 @@ void ShmFramePublisher::publish(const AVFrame *frame, int64_t pts_us)
 	const uint64_t slot_index = write_index_ % SLOT_COUNT;
 	uint8_t *slot = slots_base_ + slot_index * slot_stride_;
 
-	seq->fetch_add(1, std::memory_order_relaxed); // odd: writing
+	seq->fetch_add(1, std::memory_order_release); // odd: writing
 
 	for(uint32_t p = 0; p < plane_count_; ++p)
 	{
@@ -315,13 +358,16 @@ void ShmFramePublisher::publish(const AVFrame *frame, int64_t pts_us)
 
 ShmFramePublisher::~ShmFramePublisher()
 {
-	shutdown();
+#ifdef Q_OS_WINDOWS
+	std::lock_guard<std::mutex> lock(mutex_);
+	shutdown_locked();
+#endif
 }
 
 #else // !Q_OS_WINDOWS — no-op stubs so call sites need no guards
 
-bool ShmFramePublisher::configure(uint32_t, uint32_t, uint32_t) { return false; }
-void ShmFramePublisher::shutdown() {}
+bool ShmFramePublisher::configure_locked(uint32_t, uint32_t, uint32_t) { return false; }
+void ShmFramePublisher::shutdown_locked() {}
 void ShmFramePublisher::publish(const AVFrame *, int64_t) { ++dropped_frames_; }
 ShmFramePublisher::~ShmFramePublisher() {}
 
