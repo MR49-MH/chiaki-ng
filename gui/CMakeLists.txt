@@ -48,6 +48,8 @@ set(SOURCE_FILES
 	src/qmlsettings.cpp
 	include/qmlsvgprovider.h
 	src/qmlsvgprovider.cpp
+	include/shmframepublisher.h
+	src/shmframepublisher.cpp
 	include/systemdinhibit.h
 	src/systemdinhibit.cpp
 	)

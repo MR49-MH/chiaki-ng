@@ -718,6 +718,40 @@ DialogView {
 
                     Label {
                         Layout.alignment: Qt.AlignRight
+                        text: qsTr("Vertical Sync:")
+                    }
+
+                    C.CheckBox {
+                        checked: Chiaki.settings.vSyncEnabled
+                        onClicked: {
+                            Chiaki.settings.vSyncEnabled = checked
+                            if (Chiaki.window.runtimeRendererBackend === 1 && Chiaki.settings.restartApplication())
+                                Qt.quit()
+                        }
+                    }
+
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: qsTr("(Unchecked)")
+                    }
+
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: qsTr("Shared Memory Frames:")
+                    }
+
+                    C.CheckBox {
+                        checked: Chiaki.settings.shmFrameOutput
+                        onClicked: Chiaki.settings.shmFrameOutput = checked
+                    }
+
+                    Label {
+                        Layout.alignment: Qt.AlignRight
+                        text: qsTr("(Unchecked)")
+                    }
+
+                    Label {
+                        Layout.alignment: Qt.AlignRight
                         text: qsTr("Render Preset:")
                     }
 

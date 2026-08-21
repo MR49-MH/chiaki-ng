@@ -181,6 +181,39 @@ void QmlSettings::setLogVerbose(bool verbose)
     emit logVerboseChanged();
 }
 
+bool QmlSettings::logSanitize() const
+{
+    return settings->GetLogSanitize();
+}
+
+void QmlSettings::setLogSanitize(bool enabled)
+{
+    settings->SetLogSanitize(enabled);
+    emit logSanitizeChanged();
+}
+
+bool QmlSettings::vSyncEnabled() const
+{
+    return settings->GetVSyncEnabled();
+}
+
+void QmlSettings::setVSyncEnabled(bool enabled)
+{
+    settings->SetVSyncEnabled(enabled);
+    emit vSyncEnabledChanged();
+}
+
+bool QmlSettings::shmFrameOutput() const
+{
+    return settings->GetShmFrameOutput();
+}
+
+void QmlSettings::setShmFrameOutput(bool enabled)
+{
+    settings->SetShmFrameOutput(enabled);
+    emit shmFrameOutputChanged();
+}
+
 int QmlSettings::rumbleHapticsIntensity() const
 {
     return static_cast<int>(settings->GetRumbleHapticsIntensity());
