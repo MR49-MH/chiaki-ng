@@ -4,7 +4,7 @@
 
 extern "C" {
 #include <libavutil/frame.h>
-#include <libavutil/hwframe.h>
+#include <libavutil/hwcontext.h>
 #include <libavutil/pixfmt.h>
 }
 
