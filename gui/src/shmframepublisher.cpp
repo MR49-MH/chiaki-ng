@@ -59,7 +59,7 @@ struct ShmHeader
 	uint64_t frame_counter;  // total published frames
 	int64_t pts_us;          // mirror of newest slot meta
 	int64_t qpc_write_us;    // mirror of newest slot meta
-	uint8_t reserved1[256 - 120];
+	uint8_t reserved1[256 - 112];
 };
 
 struct ShmSlotMeta
