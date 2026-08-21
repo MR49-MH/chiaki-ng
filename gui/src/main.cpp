@@ -39,7 +39,9 @@ int main(int argc, char *argv[]) { return real_main(argc, argv); }
 
 #include <QCommandLineParser>
 #include <QMap>
+#include <QLocale>
 #include <QSurfaceFormat>
+#include <QTranslator>
 
 Q_DECLARE_METATYPE(ChiakiLogLevel)
 Q_DECLARE_METATYPE(ChiakiRegistEventType)
@@ -187,6 +189,22 @@ int real_main(int argc, char *argv[])
 	bool use_alt_settings = false;
 	if(!parser.isSet(profile_option))
 		use_alt_settings = true;
+
+	// Install UI translation before any QML is loaded (takes effect after restart)
+	QTranslator translator;
+	{
+		Settings &lang_settings = use_alt_settings ? alt_settings : settings;
+		QString language = lang_settings.GetLanguage();
+		if(language.isEmpty() || language == QStringLiteral("system"))
+			language = QLocale::system().name();
+		if(language.startsWith(QStringLiteral("zh")))
+		{
+			if(translator.load(QStringLiteral(":/i18n/chiaki_zh_CN.qm")))
+				QGuiApplication::installTranslator(&translator);
+			else
+				fprintf(stderr, "Failed to load chiaki_zh_CN.qm translation\n");
+		}
+	}
 
 	if(args.length() == 0)
 		return RunMain(app, use_alt_settings ? &alt_settings : &settings, exit_app_on_stream_exit);

@@ -608,6 +608,32 @@ DialogView {
 
                         Label {
                             Layout.alignment: Qt.AlignRight
+                            text: qsTr("Language:")
+                        }
+                        C.ComboBox {
+                            id: languageCombo
+                            implicitContentWidthPolicy: ComboBox.WidestText
+                            model: [qsTr("System"), "English", "简体中文"]
+                            currentIndex: {
+                                const lang = Chiaki.settings.language
+                                if(lang === "zh_CN")
+                                    return 2
+                                if(lang === "en")
+                                    return 1
+                                return 0
+                            }
+                            onActivated: function(index){
+                                const vals = ["system", "en", "zh_CN"]
+                                Chiaki.settings.language = vals[index]
+                            }
+                        }
+                        Label {
+                            Layout.alignment: Qt.AlignRight
+                            text: qsTr("(restart required)")
+                        }
+
+                        Label {
+                            Layout.alignment: Qt.AlignRight
                             text: qsTr("Stream Menu Shortcut Enabled")
                         }
                         C.CheckBox {

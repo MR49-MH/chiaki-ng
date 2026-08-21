@@ -96,6 +96,12 @@ add_executable(chiaki WIN32
 )
 target_include_directories(chiaki PRIVATE include)
 
+# Translations: compile chiaki_zh_CN.ts -> .qm and embed under :/i18n/
+find_package(Qt6 COMPONENTS LinguistTools REQUIRED)
+qt_add_translations(chiaki
+		TS_FILES lang/chiaki_zh_CN.ts
+		RESOURCE_PREFIX "/i18n")
+
 add_library(placebo-libav-impl src/libav_impl.c)
 target_link_libraries(placebo-libav-impl PkgConfig::LIBPLACEBO FFMPEG::avcodec FFMPEG::avutil FFMPEG::avformat)
 target_link_libraries(chiaki PkgConfig::LIBPLACEBO placebo-libav-impl)
