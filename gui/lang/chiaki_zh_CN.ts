@@ -267,22 +267,6 @@
 <context>
     <name>Main</name>
     <message>
-        <source>Renderer Fallback</source>
-        <translation>渲染器回退</translation>
-    </message>
-    <message>
-        <source>Vulkan renderer is unavailable and chiaki-ng switched to OpenGL.
-
-Reason: %1</source>
-        <translation>Vulkan 渲染器不可用，chiaki-ng 已切换为 OpenGL。
-
-原因：%1</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>确定</translation>
-    </message>
-    <message>
         <source>Registration Type</source>
         <translation>注册类型</translation>
     </message>
@@ -889,10 +873,6 @@ This enables:
         <translation>缩放</translation>
     </message>
     <message>
-        <source>Deinterlace</source>
-        <translation>反交错</translation>
-    </message>
-    <message>
         <source>Debanding</source>
         <translation>去色带</translation>
     </message>
@@ -993,20 +973,8 @@ This enables:
         <translation>EwaLanczosSharpest</translation>
     </message>
     <message>
-        <source>FSR</source>
-        <translation>FSR</translation>
-    </message>
-    <message>
-        <source>FSRCNNX x2 8-0-4-1</source>
-        <translation>FSRCNNX x2 8-0-4-1</translation>
-    </message>
-    <message>
-        <source>FSRCNNX x2 16-0-4-1</source>
-        <translation>FSRCNNX x2 16-0-4-1</translation>
-    </message>
-    <message>
-        <source>(EwaLanczos)</source>
-        <translation>(EwaLanczos)</translation>
+        <source>(EwaLanczosSharp)</source>
+        <translation>(EwaLanczosSharp)</translation>
     </message>
     <message>
         <source>Plane Upscaler:</source>
@@ -1053,60 +1021,32 @@ This enables:
         <translation>（跟随所选缩小算法）</translation>
     </message>
     <message>
+        <source>Frame Mixer:</source>
+        <translation>帧混合器：</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>无</translation>
+    </message>
+    <message>
+        <source>Linear</source>
+        <translation>Linear</translation>
+    </message>
+    <message>
+        <source>Cubic</source>
+        <translation>Cubic</translation>
+    </message>
+    <message>
+        <source>(Oversample)</source>
+        <translation>（过采样）</translation>
+    </message>
+    <message>
         <source>Anti-ringing Strength:</source>
         <translation>抗振铃强度：</translation>
     </message>
     <message>
         <source>(0.00)</source>
         <translation>(0.00)</translation>
-    </message>
-    <message>
-        <source>Enable Deinterlace:</source>
-        <translation>启用反交错：</translation>
-    </message>
-    <message>
-        <source>(no)</source>
-        <translation>（否）</translation>
-    </message>
-    <message>
-        <source>Preset:</source>
-        <translation>预设：</translation>
-    </message>
-    <message>
-        <source>Default</source>
-        <translation>默认</translation>
-    </message>
-    <message>
-        <source>(Default)</source>
-        <translation>（默认）</translation>
-    </message>
-    <message>
-        <source>Algorithm:</source>
-        <translation>算法：</translation>
-    </message>
-    <message>
-        <source>Weave</source>
-        <translation>Weave</translation>
-    </message>
-    <message>
-        <source>Bob</source>
-        <translation>Bob</translation>
-    </message>
-    <message>
-        <source>Yadif</source>
-        <translation>Yadif</translation>
-    </message>
-    <message>
-        <source>Bwdif</source>
-        <translation>Bwdif</translation>
-    </message>
-    <message>
-        <source>(Yadif)</source>
-        <translation>（Yadif）</translation>
-    </message>
-    <message>
-        <source>Skip spatial check:</source>
-        <translation>跳过空间检查：</translation>
     </message>
     <message>
         <source>Deband Enabled:</source>
@@ -1123,6 +1063,10 @@ This enables:
     <message>
         <source>Deband Preset:</source>
         <translation>去色带预设：</translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation>默认</translation>
     </message>
     <message>
         <source>(Custom)</source>
@@ -1546,10 +1490,6 @@ This enables:
         <translation>手柄</translation>
     </message>
     <message>
-        <source>Remote</source>
-        <translation>远程</translation>
-    </message>
-    <message>
         <source>Config</source>
         <translation>配置</translation>
     </message>
@@ -1634,7 +1574,7 @@ This enables:
         <translation>打开</translation>
     </message>
     <message>
-        <source>Streamer Mode (Hides Info)</source>
+        <source>Streamer Mode (Hides Sensitive Info)</source>
         <translation>直播模式（隐藏敏感信息）</translation>
     </message>
     <message>
@@ -1738,10 +1678,6 @@ This enables:
         <translation>硬件解码器：</translation>
     </message>
     <message>
-        <source>Zero-Copy</source>
-        <translation>零拷贝</translation>
-    </message>
-    <message>
         <source>(Auto)</source>
         <translation>（自动）</translation>
     </message>
@@ -1774,8 +1710,8 @@ This enables:
         <translation>拉伸</translation>
     </message>
     <message>
-        <source>(Fullscreen)</source>
-        <translation>（全屏）</translation>
+        <source>(Stream Resolution)</source>
+        <translation>（串流分辨率）</translation>
     </message>
     <message>
         <source>Custom Resolution Width</source>
@@ -1826,68 +1762,12 @@ This enables:
         <translation>高质量</translation>
     </message>
     <message>
-        <source>High Quality + Spatial Upscaling</source>
-        <translation>高质量 + 空间放大</translation>
-    </message>
-    <message>
-        <source>High Quality + Advanced Spatial Upscaling</source>
-        <translation>高质量 + 高级空间放大</translation>
-    </message>
-    <message>
         <source>Custom</source>
         <translation>自定义</translation>
     </message>
     <message>
         <source>(High Quality)</source>
         <translation>（高质量）</translation>
-    </message>
-    <message>
-        <source>Frame Mixer:</source>
-        <translation>帧混合器：</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation>无</translation>
-    </message>
-    <message>
-        <source>Oversample</source>
-        <translation>过采样</translation>
-    </message>
-    <message>
-        <source>Hermite</source>
-        <translation>Hermite</translation>
-    </message>
-    <message>
-        <source>Linear</source>
-        <translation>Linear</translation>
-    </message>
-    <message>
-        <source>Cubic</source>
-        <translation>Cubic</translation>
-    </message>
-    <message>
-        <source>(None)</source>
-        <translation>（无）</translation>
-    </message>
-    <message>
-        <source>Renderer Backend:</source>
-        <translation>渲染后端：</translation>
-    </message>
-    <message>
-        <source>Vulkan</source>
-        <translation>Vulkan</translation>
-    </message>
-    <message>
-        <source>OpenGL</source>
-        <translation>OpenGL</translation>
-    </message>
-    <message>
-        <source>(Vulkan)</source>
-        <translation>（Vulkan）</translation>
-    </message>
-    <message>
-        <source>Vulkan Deferred Swap:</source>
-        <translation>Vulkan 延迟交换：</translation>
     </message>
     <message>
         <source>Custom Renderer Settings</source>
@@ -1912,6 +1792,10 @@ This enables:
     <message>
         <source>Local</source>
         <translation>本地</translation>
+    </message>
+    <message>
+        <source>Remote</source>
+        <translation>远程</translation>
     </message>
     <message>
         <source>Resolution:</source>
@@ -2078,10 +1962,6 @@ This enables:
         <translation>(5%)</translation>
     </message>
     <message>
-        <source>Request IDR Frame on FEC Failure</source>
-        <translation>FEC 失败时请求 IDR 帧</translation>
-    </message>
-    <message>
         <source>Show Stream Stats During Gameplay</source>
         <translation>游戏中显示串流统计信息</translation>
     </message>
@@ -2124,14 +2004,6 @@ This enables:
     <message>
         <source>Are you sure you want to unhide this console?</source>
         <translation>确定要取消隐藏这台主机吗？</translation>
-    </message>
-    <message>
-        <source>Keyboard as controller</source>
-        <translation>键盘作为手柄</translation>
-    </message>
-    <message>
-        <source>Enable Mouse Touchpad</source>
-        <translation>启用鼠标触摸板</translation>
     </message>
     <message>
         <source>Background Controller Events:</source>
@@ -2222,46 +2094,6 @@ This enables:
         <translation>（跟随主机设置）</translation>
     </message>
     <message>
-        <source>Login to PSN</source>
-        <translation>登录 PSN</translation>
-    </message>
-    <message>
-        <source>Clear PSN Token</source>
-        <translation>清除 PSN 令牌</translation>
-    </message>
-    <message>
-        <source>Hole Punching Port Guessing:</source>
-        <translation>打洞端口猜测：</translation>
-    </message>
-    <message>
-        <source>Force STUN port guessing</source>
-        <translation>强制 STUN 端口猜测</translation>
-    </message>
-    <message>
-        <source>Port Guess Count:</source>
-        <translation>端口猜测次数：</translation>
-    </message>
-    <message>
-        <source> guesses</source>
-        <translation> 次</translation>
-    </message>
-    <message>
-        <source>(75)</source>
-        <translation>(75)</translation>
-    </message>
-    <message>
-        <source>Port Guess Socket Count:</source>
-        <translation>端口猜测套接字数：</translation>
-    </message>
-    <message>
-        <source> sockets</source>
-        <translation> 个</translation>
-    </message>
-    <message>
-        <source>(250)</source>
-        <translation>(250)</translation>
-    </message>
-    <message>
         <source>Current Profile: </source>
         <translation>当前配置文件：</translation>
     </message>
@@ -2274,6 +2106,14 @@ This enables:
         <translation>管理配置文件</translation>
     </message>
     <message>
+        <source>Login to PSN</source>
+        <translation>登录 PSN</translation>
+    </message>
+    <message>
+        <source>Clear PSN Token</source>
+        <translation>清除 PSN 令牌</translation>
+    </message>
+    <message>
         <source>Export settings to file</source>
         <translation>导出设置到文件</translation>
     </message>
@@ -2284,10 +2124,6 @@ This enables:
     <message>
         <source>About %1-ng</source>
         <translation>关于 %1-ng</translation>
-    </message>
-    <message>
-        <source>Sanitize Logs (checked)</source>
-        <translation>日志脱敏（已勾选）</translation>
     </message>
     <message>
         <source>Verbose Logging (unchecked)</source>
@@ -2369,91 +2205,12 @@ This enables:
         <translation>--profile=</translation>
     </message>
     <message>
-        <source>Custom Steam Base Path (Optional)</source>
-        <translation>自定义 Steam 基础路径（可选）</translation>
-    </message>
-    <message>
-        <source>Choose new steam base path</source>
-        <translation>选择新的 Steam 基础路径</translation>
-    </message>
-    <message>
         <source>Create non-Steam game</source>
         <translation>创建非 Steam 游戏</translation>
     </message>
     <message>
         <source>Please Restart Steam</source>
         <translation>请重启 Steam</translation>
-    </message>
-</context>
-<context>
-    <name>StreamMenuWindow</name>
-    <message>
-        <source>% Volume</source>
-        <translation>% 音量</translation>
-    </message>
-    <message>
-        <source>Mic</source>
-        <translation>麦克风</translation>
-    </message>
-    <message>
-        <source>Zoom</source>
-        <translation>放大</translation>
-    </message>
-    <message>
-        <source>No Black Bars</source>
-        <translation>无黑边</translation>
-    </message>
-    <message>
-        <source> x</source>
-        <translation> x</translation>
-    </message>
-    <message>
-        <source>Stretch</source>
-        <translation>拉伸</translation>
-    </message>
-    <message>
-        <source>Default</source>
-        <translation>默认</translation>
-    </message>
-    <message>
-        <source>High Quality</source>
-        <translation>高质量</translation>
-    </message>
-    <message>
-        <source>HQ + Spatial</source>
-        <translation>高质 + 空间放大</translation>
-    </message>
-    <message>
-        <source>HQ + Adv Spatial</source>
-        <translation>高质 + 高级空间放大</translation>
-    </message>
-    <message>
-        <source>Custom</source>
-        <translation>自定义</translation>
-    </message>
-    <message>
-        <source>Display</source>
-        <translation>显示</translation>
-    </message>
-    <message>
-        <source>Placebo</source>
-        <translation>Placebo</translation>
-    </message>
-    <message>
-        <source>Connected to &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>已连接到 &lt;b&gt;%1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Connecting to &lt;b&gt;%1&lt;/b&gt;</source>
-        <translation>正在连接 &lt;b&gt;%1&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>packet loss</source>
-        <translation>丢包率</translation>
-    </message>
-    <message>
-        <source>dropped frames</source>
-        <translation>丢弃帧数</translation>
     </message>
 </context>
 <context>
@@ -2501,28 +2258,12 @@ To re-enable change Audio/Video to Audio and Video Enabled in the General tab of
         <translation>回到主界面</translation>
     </message>
     <message>
-        <source>queue depth avg</source>
-        <translation>队列平均深度</translation>
-    </message>
-    <message>
-        <source>pending frame age</source>
-        <translation>待渲染帧龄</translation>
-    </message>
-    <message>
-        <source>%1 ms</source>
-        <translation>%1 ms</translation>
-    </message>
-    <message>
         <source>packet loss</source>
         <translation>丢包率</translation>
     </message>
     <message>
         <source>dropped frames</source>
         <translation>丢弃帧数</translation>
-    </message>
-    <message>
-        <source>lost frames</source>
-        <translation>丢失帧数</translation>
     </message>
     <message>
         <source>% Volume</source>
@@ -2555,14 +2296,6 @@ To re-enable change Audio/Video to Audio and Video Enabled in the General tab of
     <message>
         <source>High Quality</source>
         <translation>高质量</translation>
-    </message>
-    <message>
-        <source>HQ + Spatial</source>
-        <translation>高质 + 空间放大</translation>
-    </message>
-    <message>
-        <source>HQ + Adv Spatial</source>
-        <translation>高质 + 高级空间放大</translation>
     </message>
     <message>
         <source>Custom</source>
@@ -2603,14 +2336,6 @@ To re-enable change Audio/Video to Audio and Video Enabled in the General tab of
     <message>
         <source>Console Login PIN</source>
         <translation>主机登录 PIN 码</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>取消</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>确定</translation>
     </message>
 </context>
 </TS>

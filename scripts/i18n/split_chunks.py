@@ -30,6 +30,10 @@ for gi, group in enumerate(GROUPS):
     chunk = {}
     for entry in group:
         ctx, half = (entry.split(":") + [None])[:2]
+        if ctx not in by_ctx:
+            # context absent from this branch's QML (e.g. newer-only files)
+            print(f"chunk_{gi}.json: skipping missing context {ctx}")
+            continue
         items = sorted(by_ctx[ctx])
         if half == "H0":
             items = items[: len(items) // 2]

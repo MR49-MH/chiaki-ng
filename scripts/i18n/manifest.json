@@ -249,25 +249,13 @@
  },
  "Main::0": {
   "ctx": "Main",
-  "src": "Renderer Fallback"
+  "src": "Registration Type"
  },
  "Main::1": {
   "ctx": "Main",
-  "src": "Vulkan renderer is unavailable and chiaki-ng switched to OpenGL.\n\nReason: %1"
- },
- "Main::2": {
-  "ctx": "Main",
-  "src": "OK"
- },
- "Main::3": {
-  "ctx": "Main",
-  "src": "Registration Type"
- },
- "Main::4": {
-  "ctx": "Main",
   "src": "Would you like to use automatic registration?"
  },
- "Main::5": {
+ "Main::2": {
   "ctx": "Main",
   "src": "Would you like to use automatic registration (must be main PS4 console registered to your PSN)?"
  },
@@ -841,433 +829,393 @@
  },
  "PlaceboSettingsDialog::4": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Deinterlace"
+  "src": "Debanding"
  },
  "PlaceboSettingsDialog::5": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Debanding"
+  "src": "Sigmoidization"
  },
  "PlaceboSettingsDialog::6": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Sigmoidization"
+  "src": "Color"
  },
  "PlaceboSettingsDialog::7": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Color"
+  "src": "Peak Detection"
  },
  "PlaceboSettingsDialog::8": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Peak Detection"
+  "src": "Color Mapping"
  },
  "PlaceboSettingsDialog::9": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Color Mapping"
+  "src": "Libplacebo Renderer Options Details"
  },
  "PlaceboSettingsDialog::10": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Libplacebo Renderer Options Details"
+  "src": "Open Documentation"
  },
  "PlaceboSettingsDialog::11": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Open Documentation"
+  "src": "Open Documentation in Web Browser with copied URL"
  },
  "PlaceboSettingsDialog::12": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Open Documentation in Web Browser with copied URL"
+  "src": "Click to Re-Copy URL"
  },
  "PlaceboSettingsDialog::13": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Click to Re-Copy URL"
+  "src": "Export Render Settings to File"
  },
  "PlaceboSettingsDialog::14": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Export Render Settings to File"
+  "src": "Export"
  },
  "PlaceboSettingsDialog::15": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Export"
+  "src": "Import Render Settings from File"
  },
  "PlaceboSettingsDialog::16": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Import Render Settings from File"
+  "src": "Import"
  },
  "PlaceboSettingsDialog::17": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Import"
+  "src": "Upscaler:"
  },
  "PlaceboSettingsDialog::18": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Upscaler:"
+  "src": "Custom"
  },
  "PlaceboSettingsDialog::19": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Custom"
+  "src": "Nearest"
  },
  "PlaceboSettingsDialog::20": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Nearest"
+  "src": "Bilinear"
  },
  "PlaceboSettingsDialog::21": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Bilinear"
+  "src": "Oversample"
  },
  "PlaceboSettingsDialog::22": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Oversample"
+  "src": "Bicubic"
  },
  "PlaceboSettingsDialog::23": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Bicubic"
+  "src": "Gaussian"
  },
  "PlaceboSettingsDialog::24": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Gaussian"
+  "src": "Catmull Rom"
  },
  "PlaceboSettingsDialog::25": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Catmull Rom"
+  "src": "Lanczos"
  },
  "PlaceboSettingsDialog::26": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Lanczos"
+  "src": "EwaLanczos"
  },
  "PlaceboSettingsDialog::27": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "EwaLanczos"
+  "src": "EwaLanczosSharp"
  },
  "PlaceboSettingsDialog::28": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "EwaLanczosSharp"
+  "src": "EwaLanczosSharpest"
  },
  "PlaceboSettingsDialog::29": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "EwaLanczosSharpest"
+  "src": "(EwaLanczosSharp)"
  },
  "PlaceboSettingsDialog::30": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "FSR"
+  "src": "Plane Upscaler:"
  },
  "PlaceboSettingsDialog::31": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "FSRCNNX x2 8-0-4-1"
+  "src": "Chosen Upscaler"
  },
  "PlaceboSettingsDialog::32": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "FSRCNNX x2 16-0-4-1"
+  "src": "(Chosen Upscaler)"
  },
  "PlaceboSettingsDialog::33": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(EwaLanczos)"
+  "src": "Downscaler:"
  },
  "PlaceboSettingsDialog::34": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Plane Upscaler:"
+  "src": "Box"
  },
  "PlaceboSettingsDialog::35": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Chosen Upscaler"
+  "src": "Hermite"
  },
  "PlaceboSettingsDialog::36": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(Chosen Upscaler)"
+  "src": "Mitchell"
  },
  "PlaceboSettingsDialog::37": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Downscaler:"
+  "src": "(Hermite)"
  },
  "PlaceboSettingsDialog::38": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Box"
+  "src": "Plane Downscaler:"
  },
  "PlaceboSettingsDialog::39": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Hermite"
+  "src": "Chosen Downscaler"
  },
  "PlaceboSettingsDialog::40": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Mitchell"
+  "src": "(Chosen Downscaler)"
  },
  "PlaceboSettingsDialog::41": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(Hermite)"
+  "src": "Frame Mixer:"
  },
  "PlaceboSettingsDialog::42": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Plane Downscaler:"
+  "src": "None"
  },
  "PlaceboSettingsDialog::43": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Chosen Downscaler"
+  "src": "Linear"
  },
  "PlaceboSettingsDialog::44": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(Chosen Downscaler)"
+  "src": "Cubic"
  },
  "PlaceboSettingsDialog::45": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Anti-ringing Strength:"
+  "src": "(Oversample)"
  },
  "PlaceboSettingsDialog::46": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(0.00)"
+  "src": "Anti-ringing Strength:"
  },
  "PlaceboSettingsDialog::47": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Enable Deinterlace:"
+  "src": "(0.00)"
  },
  "PlaceboSettingsDialog::48": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(no)"
+  "src": "Deband Enabled:"
  },
  "PlaceboSettingsDialog::49": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Preset:"
+  "src": "Enable Debanding"
  },
  "PlaceboSettingsDialog::50": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Default"
+  "src": "(Checked)"
  },
  "PlaceboSettingsDialog::51": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(Default)"
+  "src": "Deband Preset:"
  },
  "PlaceboSettingsDialog::52": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Algorithm:"
+  "src": "Default"
  },
  "PlaceboSettingsDialog::53": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Weave"
+  "src": "(Custom)"
  },
  "PlaceboSettingsDialog::54": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Bob"
+  "src": "Deband Iterations:"
  },
  "PlaceboSettingsDialog::55": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Yadif"
+  "src": "%1"
  },
  "PlaceboSettingsDialog::56": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Bwdif"
+  "src": "(1)"
  },
  "PlaceboSettingsDialog::57": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(Yadif)"
+  "src": "Deband Threshold:"
  },
  "PlaceboSettingsDialog::58": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Skip spatial check:"
+  "src": "(3.0)"
  },
  "PlaceboSettingsDialog::59": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Deband Enabled:"
+  "src": "Deband Radius:"
  },
  "PlaceboSettingsDialog::60": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Enable Debanding"
+  "src": "(16.0)"
  },
  "PlaceboSettingsDialog::61": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(Checked)"
+  "src": "Deband Grain:"
  },
  "PlaceboSettingsDialog::62": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Deband Preset:"
+  "src": "(4.0)"
  },
  "PlaceboSettingsDialog::63": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(Custom)"
+  "src": "Sigmoidization Enabled:"
  },
  "PlaceboSettingsDialog::64": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Deband Iterations:"
+  "src": "Enable Sigmoidization"
  },
  "PlaceboSettingsDialog::65": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "%1"
+  "src": "Sigmoid Preset:"
  },
  "PlaceboSettingsDialog::66": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(1)"
+  "src": "Sigmoid Center:"
  },
  "PlaceboSettingsDialog::67": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Deband Threshold:"
+  "src": "(0.75)"
  },
  "PlaceboSettingsDialog::68": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(3.0)"
+  "src": "Sigmoid Slope:"
  },
  "PlaceboSettingsDialog::69": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Deband Radius:"
+  "src": "(6.5)"
  },
  "PlaceboSettingsDialog::70": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(16.0)"
+  "src": "Color Adjustment Enabled:"
  },
  "PlaceboSettingsDialog::71": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Deband Grain:"
+  "src": "Enable Color Adjustment"
  },
  "PlaceboSettingsDialog::72": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(4.0)"
+  "src": "Color Adjustment Preset:"
  },
  "PlaceboSettingsDialog::73": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Sigmoidization Enabled:"
+  "src": "Neutral"
  },
  "PlaceboSettingsDialog::74": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Enable Sigmoidization"
+  "src": "Brightness:"
  },
  "PlaceboSettingsDialog::75": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Sigmoid Preset:"
+  "src": "Contrast:"
  },
  "PlaceboSettingsDialog::76": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Sigmoid Center:"
+  "src": "(1.0)"
  },
  "PlaceboSettingsDialog::77": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(0.75)"
+  "src": "Saturation:"
  },
  "PlaceboSettingsDialog::78": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Sigmoid Slope:"
+  "src": "Hue:"
  },
  "PlaceboSettingsDialog::79": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(6.5)"
+  "src": "Gamma:"
  },
  "PlaceboSettingsDialog::80": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Color Adjustment Enabled:"
+  "src": "Temperature:"
  },
  "PlaceboSettingsDialog::81": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Enable Color Adjustment"
+  "src": "(0.000)"
  },
  "PlaceboSettingsDialog::82": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Color Adjustment Preset:"
+  "src": "HDR Peak Detection Enabled:"
  },
  "PlaceboSettingsDialog::83": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Neutral"
+  "src": "Enable HDR Peak Detection"
  },
  "PlaceboSettingsDialog::84": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Brightness:"
+  "src": "Peak Detection Preset:"
  },
  "PlaceboSettingsDialog::85": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Contrast:"
+  "src": "High Quality"
  },
  "PlaceboSettingsDialog::86": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(1.0)"
+  "src": "(High Quality)"
  },
  "PlaceboSettingsDialog::87": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Saturation:"
+  "src": "Peak Smoothing Period:"
  },
  "PlaceboSettingsDialog::88": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Hue:"
+  "src": "(20.0)"
  },
  "PlaceboSettingsDialog::89": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Gamma:"
+  "src": "Scene Threshold Low:"
  },
  "PlaceboSettingsDialog::90": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Temperature:"
+  "src": "Scene Threshold High:"
  },
  "PlaceboSettingsDialog::91": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(0.000)"
+  "src": "Peak Percentile:"
  },
  "PlaceboSettingsDialog::92": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "HDR Peak Detection Enabled:"
+  "src": "(99.995)"
  },
  "PlaceboSettingsDialog::93": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Enable HDR Peak Detection"
+  "src": "Black Cutoff:"
  },
  "PlaceboSettingsDialog::94": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Peak Detection Preset:"
+  "src": "Allow Delayed Peak:"
  },
  "PlaceboSettingsDialog::95": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "High Quality"
+  "src": "Enable 1-Frame Delayed Peak"
  },
  "PlaceboSettingsDialog::96": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(High Quality)"
+  "src": "(Unchecked)"
  },
  "PlaceboSettingsDialog::97": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Peak Smoothing Period:"
+  "src": "Color Mapping Enabled:"
  },
  "PlaceboSettingsDialog::98": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "(20.0)"
+  "src": "Use Color Mapping Settings"
  },
  "PlaceboSettingsDialog::99": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Scene Threshold Low:"
+  "src": "Color Mapping Preset:"
  },
  "PlaceboSettingsDialog::100": {
   "ctx": "PlaceboSettingsDialog",
-  "src": "Scene Threshold High:"
- },
- "PlaceboSettingsDialog::101": {
-  "ctx": "PlaceboSettingsDialog",
-  "src": "Peak Percentile:"
- },
- "PlaceboSettingsDialog::102": {
-  "ctx": "PlaceboSettingsDialog",
-  "src": "(99.995)"
- },
- "PlaceboSettingsDialog::103": {
-  "ctx": "PlaceboSettingsDialog",
-  "src": "Black Cutoff:"
- },
- "PlaceboSettingsDialog::104": {
-  "ctx": "PlaceboSettingsDialog",
-  "src": "Allow Delayed Peak:"
- },
- "PlaceboSettingsDialog::105": {
-  "ctx": "PlaceboSettingsDialog",
-  "src": "Enable 1-Frame Delayed Peak"
- },
- "PlaceboSettingsDialog::106": {
-  "ctx": "PlaceboSettingsDialog",
-  "src": "(Unchecked)"
- },
- "PlaceboSettingsDialog::107": {
-  "ctx": "PlaceboSettingsDialog",
-  "src": "Color Mapping Enabled:"
- },
- "PlaceboSettingsDialog::108": {
-  "ctx": "PlaceboSettingsDialog",
-  "src": "Use Color Mapping Settings"
- },
- "PlaceboSettingsDialog::109": {
-  "ctx": "PlaceboSettingsDialog",
-  "src": "Color Mapping Preset:"
- },
- "PlaceboSettingsDialog::110": {
-  "ctx": "PlaceboSettingsDialog",
   "src": "Color Mapping Settings:"
  },
- "PlaceboSettingsDialog::111": {
+ "PlaceboSettingsDialog::101": {
   "ctx": "PlaceboSettingsDialog",
   "src": "Open"
  },
@@ -1477,773 +1425,665 @@
  },
  "SettingsDialog::9": {
   "ctx": "SettingsDialog",
-  "src": "Remote"
+  "src": "Config"
  },
  "SettingsDialog::10": {
   "ctx": "SettingsDialog",
-  "src": "Config"
+  "src": "Action On Disconnect:"
  },
  "SettingsDialog::11": {
   "ctx": "SettingsDialog",
-  "src": "Action On Disconnect:"
+  "src": "Do Nothing"
  },
  "SettingsDialog::12": {
   "ctx": "SettingsDialog",
-  "src": "Do Nothing"
+  "src": "Enter Sleep Mode"
  },
  "SettingsDialog::13": {
   "ctx": "SettingsDialog",
-  "src": "Enter Sleep Mode"
+  "src": "Ask"
  },
  "SettingsDialog::14": {
   "ctx": "SettingsDialog",
-  "src": "Ask"
+  "src": "(Ask)"
  },
  "SettingsDialog::15": {
   "ctx": "SettingsDialog",
-  "src": "(Ask)"
+  "src": "Action On Suspend:"
  },
  "SettingsDialog::16": {
   "ctx": "SettingsDialog",
-  "src": "Action On Suspend:"
+  "src": "(Do Nothing)"
  },
  "SettingsDialog::17": {
   "ctx": "SettingsDialog",
-  "src": "(Do Nothing)"
+  "src": "Steam Deck Haptics:"
  },
  "SettingsDialog::18": {
   "ctx": "SettingsDialog",
-  "src": "Steam Deck Haptics:"
+  "src": "True haptics for SteamDeck, better quality but noisier"
  },
  "SettingsDialog::19": {
   "ctx": "SettingsDialog",
-  "src": "True haptics for SteamDeck, better quality but noisier"
+  "src": "(Unchecked)"
  },
  "SettingsDialog::20": {
   "ctx": "SettingsDialog",
-  "src": "(Unchecked)"
+  "src": "Steam Deck Vertical:"
  },
  "SettingsDialog::21": {
   "ctx": "SettingsDialog",
-  "src": "Steam Deck Vertical:"
+  "src": "Use Steam Deck in vertical orientation (motion controls)"
  },
  "SettingsDialog::22": {
   "ctx": "SettingsDialog",
-  "src": "Use Steam Deck in vertical orientation (motion controls)"
+  "src": "Audio/Video:"
  },
  "SettingsDialog::23": {
   "ctx": "SettingsDialog",
-  "src": "Audio/Video:"
+  "src": "Audio and Video Enabled"
  },
  "SettingsDialog::24": {
   "ctx": "SettingsDialog",
-  "src": "Audio and Video Enabled"
+  "src": "Audio Disabled"
  },
  "SettingsDialog::25": {
   "ctx": "SettingsDialog",
-  "src": "Audio Disabled"
+  "src": "Video Disabled"
  },
  "SettingsDialog::26": {
   "ctx": "SettingsDialog",
-  "src": "Video Disabled"
+  "src": "Audio and Video Disabled"
  },
  "SettingsDialog::27": {
   "ctx": "SettingsDialog",
-  "src": "Audio and Video Disabled"
+  "src": "(Audio and Video Enabled)"
  },
  "SettingsDialog::28": {
   "ctx": "SettingsDialog",
-  "src": "(Audio and Video Enabled)"
+  "src": "Log Directory:"
  },
  "SettingsDialog::29": {
   "ctx": "SettingsDialog",
-  "src": "Log Directory:"
+  "src": "Open"
  },
  "SettingsDialog::30": {
   "ctx": "SettingsDialog",
-  "src": "Open"
+  "src": "Streamer Mode (Hides Sensitive Info)"
  },
  "SettingsDialog::31": {
   "ctx": "SettingsDialog",
-  "src": "Streamer Mode (Hides Info)"
+  "src": "Language:"
  },
  "SettingsDialog::32": {
   "ctx": "SettingsDialog",
-  "src": "Language:"
+  "src": "System"
  },
  "SettingsDialog::33": {
   "ctx": "SettingsDialog",
-  "src": "System"
+  "src": "(restart required)"
  },
  "SettingsDialog::34": {
   "ctx": "SettingsDialog",
-  "src": "(restart required)"
+  "src": "Stream Menu Shortcut Enabled"
  },
  "SettingsDialog::35": {
   "ctx": "SettingsDialog",
-  "src": "Stream Menu Shortcut Enabled"
+  "src": "(Checked)"
  },
  "SettingsDialog::36": {
   "ctx": "SettingsDialog",
-  "src": "(Checked)"
+  "src": "Stream Menu Combo:"
  },
  "SettingsDialog::37": {
   "ctx": "SettingsDialog",
-  "src": "Stream Menu Combo:"
+  "src": "Not Used"
  },
  "SettingsDialog::38": {
   "ctx": "SettingsDialog",
-  "src": "Not Used"
+  "src": "Cross"
  },
  "SettingsDialog::39": {
   "ctx": "SettingsDialog",
-  "src": "Cross"
+  "src": "Moon"
  },
  "SettingsDialog::40": {
   "ctx": "SettingsDialog",
-  "src": "Moon"
+  "src": "Box"
  },
  "SettingsDialog::41": {
   "ctx": "SettingsDialog",
-  "src": "Box"
+  "src": "Pyramid"
  },
  "SettingsDialog::42": {
   "ctx": "SettingsDialog",
-  "src": "Pyramid"
+  "src": "Dpad Left"
  },
  "SettingsDialog::43": {
   "ctx": "SettingsDialog",
-  "src": "Dpad Left"
+  "src": "Dpad Right"
  },
  "SettingsDialog::44": {
   "ctx": "SettingsDialog",
-  "src": "Dpad Right"
+  "src": "Dpad Up"
  },
  "SettingsDialog::45": {
   "ctx": "SettingsDialog",
-  "src": "Dpad Up"
+  "src": "Dpad Down"
  },
  "SettingsDialog::46": {
   "ctx": "SettingsDialog",
-  "src": "Dpad Down"
+  "src": "L1"
  },
  "SettingsDialog::47": {
   "ctx": "SettingsDialog",
-  "src": "L1"
+  "src": "R1"
  },
  "SettingsDialog::48": {
   "ctx": "SettingsDialog",
-  "src": "R1"
+  "src": "L3"
  },
  "SettingsDialog::49": {
   "ctx": "SettingsDialog",
-  "src": "L3"
+  "src": "R3"
  },
  "SettingsDialog::50": {
   "ctx": "SettingsDialog",
-  "src": "R3"
+  "src": "Options"
  },
  "SettingsDialog::51": {
   "ctx": "SettingsDialog",
-  "src": "Options"
+  "src": "Share"
  },
  "SettingsDialog::52": {
   "ctx": "SettingsDialog",
-  "src": "Share"
+  "src": "Touchpad"
  },
  "SettingsDialog::53": {
   "ctx": "SettingsDialog",
-  "src": "Touchpad"
+  "src": "PS"
  },
  "SettingsDialog::54": {
   "ctx": "SettingsDialog",
-  "src": "PS"
+  "src": "(L1+R1+L3+R3)"
  },
  "SettingsDialog::55": {
   "ctx": "SettingsDialog",
-  "src": "(L1+R1+L3+R3)"
+  "src": "Hardware Decoder:"
  },
  "SettingsDialog::56": {
   "ctx": "SettingsDialog",
-  "src": "Hardware Decoder:"
+  "src": "(Auto)"
  },
  "SettingsDialog::57": {
   "ctx": "SettingsDialog",
-  "src": "Zero-Copy"
+  "src": "Window Type:"
  },
  "SettingsDialog::58": {
   "ctx": "SettingsDialog",
-  "src": "(Auto)"
+  "src": "Stream Resolution"
  },
  "SettingsDialog::59": {
   "ctx": "SettingsDialog",
-  "src": "Window Type:"
+  "src": "Custom Resolution"
  },
  "SettingsDialog::60": {
   "ctx": "SettingsDialog",
-  "src": "Stream Resolution"
+  "src": "Adjust Resolution Manually"
  },
  "SettingsDialog::61": {
   "ctx": "SettingsDialog",
-  "src": "Custom Resolution"
+  "src": "Fullscreen"
  },
  "SettingsDialog::62": {
   "ctx": "SettingsDialog",
-  "src": "Adjust Resolution Manually"
+  "src": "Zoom [adjust zoom using slider in stream menu]"
  },
  "SettingsDialog::63": {
   "ctx": "SettingsDialog",
-  "src": "Fullscreen"
+  "src": "Stretch"
  },
  "SettingsDialog::64": {
   "ctx": "SettingsDialog",
-  "src": "Zoom [adjust zoom using slider in stream menu]"
+  "src": "(Stream Resolution)"
  },
  "SettingsDialog::65": {
   "ctx": "SettingsDialog",
-  "src": "Stretch"
+  "src": "Custom Resolution Width"
  },
  "SettingsDialog::66": {
   "ctx": "SettingsDialog",
-  "src": "(Fullscreen)"
+  "src": "(1920)"
  },
  "SettingsDialog::67": {
   "ctx": "SettingsDialog",
-  "src": "Custom Resolution Width"
+  "src": "Custom Resolution Height"
  },
  "SettingsDialog::68": {
   "ctx": "SettingsDialog",
-  "src": "(1920)"
+  "src": "(1080)"
  },
  "SettingsDialog::69": {
   "ctx": "SettingsDialog",
-  "src": "Custom Resolution Height"
+  "src": "Toggle Fullscreen on Double-click:"
  },
  "SettingsDialog::70": {
   "ctx": "SettingsDialog",
-  "src": "(1080)"
+  "src": "Hide Cursor during Stream"
  },
  "SettingsDialog::71": {
   "ctx": "SettingsDialog",
-  "src": "Toggle Fullscreen on Double-click:"
+  "src": "Vertical Sync:"
  },
  "SettingsDialog::72": {
   "ctx": "SettingsDialog",
-  "src": "Hide Cursor during Stream"
+  "src": "Shared Memory Frames:"
  },
  "SettingsDialog::73": {
   "ctx": "SettingsDialog",
-  "src": "Vertical Sync:"
+  "src": "Render Preset:"
  },
  "SettingsDialog::74": {
   "ctx": "SettingsDialog",
-  "src": "Shared Memory Frames:"
+  "src": "Fast"
  },
  "SettingsDialog::75": {
   "ctx": "SettingsDialog",
-  "src": "Render Preset:"
+  "src": "Default"
  },
  "SettingsDialog::76": {
   "ctx": "SettingsDialog",
-  "src": "Fast"
+  "src": "High Quality"
  },
  "SettingsDialog::77": {
   "ctx": "SettingsDialog",
-  "src": "Default"
+  "src": "Custom"
  },
  "SettingsDialog::78": {
   "ctx": "SettingsDialog",
-  "src": "High Quality"
+  "src": "(High Quality)"
  },
  "SettingsDialog::79": {
   "ctx": "SettingsDialog",
-  "src": "High Quality + Spatial Upscaling"
+  "src": "Custom Renderer Settings"
  },
  "SettingsDialog::80": {
   "ctx": "SettingsDialog",
-  "src": "High Quality + Advanced Spatial Upscaling"
+  "src": "Display Settings"
  },
  "SettingsDialog::81": {
   "ctx": "SettingsDialog",
-  "src": "Custom"
+  "src": "Settings for:"
  },
  "SettingsDialog::82": {
   "ctx": "SettingsDialog",
-  "src": "(High Quality)"
+  "src": "PS4"
  },
  "SettingsDialog::83": {
   "ctx": "SettingsDialog",
-  "src": "Frame Mixer:"
+  "src": "PS5"
  },
  "SettingsDialog::84": {
   "ctx": "SettingsDialog",
-  "src": "None"
+  "src": "Local"
  },
  "SettingsDialog::85": {
   "ctx": "SettingsDialog",
-  "src": "Oversample"
+  "src": "Remote"
  },
  "SettingsDialog::86": {
   "ctx": "SettingsDialog",
-  "src": "Hermite"
+  "src": "Resolution:"
  },
  "SettingsDialog::87": {
   "ctx": "SettingsDialog",
-  "src": "Linear"
+  "src": "360p"
  },
  "SettingsDialog::88": {
   "ctx": "SettingsDialog",
-  "src": "Cubic"
+  "src": "540p"
  },
  "SettingsDialog::89": {
   "ctx": "SettingsDialog",
-  "src": "(None)"
+  "src": "720p (Default)"
  },
  "SettingsDialog::90": {
   "ctx": "SettingsDialog",
-  "src": "Renderer Backend:"
+  "src": "1080p (PS5 and PS4 Pro)"
  },
  "SettingsDialog::91": {
   "ctx": "SettingsDialog",
-  "src": "Vulkan"
+  "src": "720p"
  },
  "SettingsDialog::92": {
   "ctx": "SettingsDialog",
-  "src": "OpenGL"
+  "src": "1080p (Default)"
  },
  "SettingsDialog::93": {
   "ctx": "SettingsDialog",
-  "src": "(Vulkan)"
+  "src": "1080p"
  },
  "SettingsDialog::94": {
   "ctx": "SettingsDialog",
-  "src": "Vulkan Deferred Swap:"
+  "src": "FPS:"
  },
  "SettingsDialog::95": {
   "ctx": "SettingsDialog",
-  "src": "Custom Renderer Settings"
+  "src": "30 fps"
  },
  "SettingsDialog::96": {
   "ctx": "SettingsDialog",
-  "src": "Display Settings"
+  "src": "60 fps (Default)"
  },
  "SettingsDialog::97": {
   "ctx": "SettingsDialog",
-  "src": "Settings for:"
+  "src": "Bitrate:"
  },
  "SettingsDialog::98": {
   "ctx": "SettingsDialog",
-  "src": "PS4"
+  "src": " Mbps"
  },
  "SettingsDialog::99": {
   "ctx": "SettingsDialog",
-  "src": "PS5"
+  "src": " (%1 Mbps)"
  },
  "SettingsDialog::100": {
   "ctx": "SettingsDialog",
-  "src": "Local"
+  "src": "Codec:"
  },
  "SettingsDialog::101": {
   "ctx": "SettingsDialog",
-  "src": "Resolution:"
+  "src": "H264"
  },
  "SettingsDialog::102": {
   "ctx": "SettingsDialog",
-  "src": "360p"
+  "src": "H265 (Default)"
  },
  "SettingsDialog::103": {
   "ctx": "SettingsDialog",
-  "src": "540p"
+  "src": "H265 HDR"
  },
  "SettingsDialog::104": {
   "ctx": "SettingsDialog",
-  "src": "720p (Default)"
+  "src": "Output Device:"
  },
  "SettingsDialog::105": {
   "ctx": "SettingsDialog",
-  "src": "1080p (PS5 and PS4 Pro)"
+  "src": "Auto"
  },
  "SettingsDialog::106": {
   "ctx": "SettingsDialog",
-  "src": "720p"
+  "src": "Input Device:"
  },
  "SettingsDialog::107": {
   "ctx": "SettingsDialog",
-  "src": "1080p (Default)"
+  "src": "Audio Buffer Size:"
  },
  "SettingsDialog::108": {
   "ctx": "SettingsDialog",
-  "src": "1080p"
+  "src": " ms"
  },
  "SettingsDialog::109": {
   "ctx": "SettingsDialog",
-  "src": "FPS:"
+  "src": "(50 ms)"
  },
  "SettingsDialog::110": {
   "ctx": "SettingsDialog",
-  "src": "30 fps"
+  "src": "Audio Volume:"
  },
  "SettingsDialog::111": {
   "ctx": "SettingsDialog",
-  "src": "60 fps (Default)"
+  "src": "% volume"
  },
  "SettingsDialog::112": {
   "ctx": "SettingsDialog",
-  "src": "Bitrate:"
+  "src": "(100%)"
  },
  "SettingsDialog::113": {
   "ctx": "SettingsDialog",
-  "src": " Mbps"
+  "src": "Start Mic Unmuted:"
  },
  "SettingsDialog::114": {
   "ctx": "SettingsDialog",
-  "src": " (%1 Mbps)"
+  "src": "Speech Processing:"
  },
  "SettingsDialog::115": {
   "ctx": "SettingsDialog",
-  "src": "Codec:"
+  "src": "Noise suppression + echo cancellation"
  },
  "SettingsDialog::116": {
   "ctx": "SettingsDialog",
-  "src": "H264"
+  "src": "Noise To Suppress:"
  },
  "SettingsDialog::117": {
   "ctx": "SettingsDialog",
-  "src": "H265 (Default)"
+  "src": "%1 dB"
  },
  "SettingsDialog::118": {
   "ctx": "SettingsDialog",
-  "src": "H265 HDR"
+  "src": "(6 dB)"
  },
  "SettingsDialog::119": {
   "ctx": "SettingsDialog",
-  "src": "Output Device:"
+  "src": "Echo To Suppress:"
  },
  "SettingsDialog::120": {
   "ctx": "SettingsDialog",
-  "src": "Auto"
+  "src": "(30 dB)"
  },
  "SettingsDialog::121": {
   "ctx": "SettingsDialog",
-  "src": "Input Device:"
+  "src": "Weak Wifi Notification:"
  },
  "SettingsDialog::122": {
   "ctx": "SettingsDialog",
-  "src": "Audio Buffer Size:"
+  "src": ">= %1% dropped packets"
  },
  "SettingsDialog::123": {
   "ctx": "SettingsDialog",
-  "src": " ms"
+  "src": "(3%)"
  },
  "SettingsDialog::124": {
   "ctx": "SettingsDialog",
-  "src": "(50 ms)"
+  "src": "Packet Loss Reported Max:"
  },
  "SettingsDialog::125": {
   "ctx": "SettingsDialog",
-  "src": "Audio Volume:"
+  "src": "%1% packet loss"
  },
  "SettingsDialog::126": {
   "ctx": "SettingsDialog",
-  "src": "% volume"
+  "src": "(5%)"
  },
  "SettingsDialog::127": {
   "ctx": "SettingsDialog",
-  "src": "(100%)"
+  "src": "Show Stream Stats During Gameplay"
  },
  "SettingsDialog::128": {
   "ctx": "SettingsDialog",
-  "src": "Start Mic Unmuted:"
+  "src": "Register New"
  },
  "SettingsDialog::129": {
   "ctx": "SettingsDialog",
-  "src": "Speech Processing:"
+  "src": "Registered Consoles"
  },
  "SettingsDialog::130": {
   "ctx": "SettingsDialog",
-  "src": "Noise suppression + echo cancellation"
+  "src": "Auto-Connect"
  },
  "SettingsDialog::131": {
   "ctx": "SettingsDialog",
-  "src": "Noise To Suppress:"
+  "src": "Delete"
  },
  "SettingsDialog::132": {
   "ctx": "SettingsDialog",
-  "src": "%1 dB"
+  "src": "Delete Console"
  },
  "SettingsDialog::133": {
   "ctx": "SettingsDialog",
-  "src": "(6 dB)"
+  "src": "Are you sure you want to delete this console?"
  },
  "SettingsDialog::134": {
   "ctx": "SettingsDialog",
-  "src": "Echo To Suppress:"
+  "src": "Hidden Consoles"
  },
  "SettingsDialog::135": {
   "ctx": "SettingsDialog",
-  "src": "(30 dB)"
+  "src": "Unhide"
  },
  "SettingsDialog::136": {
   "ctx": "SettingsDialog",
-  "src": "Weak Wifi Notification:"
+  "src": "Unhide Console"
  },
  "SettingsDialog::137": {
   "ctx": "SettingsDialog",
-  "src": ">= %1% dropped packets"
+  "src": "Are you sure you want to unhide this console?"
  },
  "SettingsDialog::138": {
   "ctx": "SettingsDialog",
-  "src": "(3%)"
+  "src": "Background Controller Events:"
  },
  "SettingsDialog::139": {
   "ctx": "SettingsDialog",
-  "src": "Packet Loss Reported Max:"
+  "src": "Process controller input when application is in background"
  },
  "SettingsDialog::140": {
   "ctx": "SettingsDialog",
-  "src": "%1% packet loss"
+  "src": "Dpad Touchpad Emulation"
  },
  "SettingsDialog::141": {
   "ctx": "SettingsDialog",
-  "src": "(5%)"
+  "src": "Dpad Touch Increment:"
  },
  "SettingsDialog::142": {
   "ctx": "SettingsDialog",
-  "src": "Request IDR Frame on FEC Failure"
+  "src": "%1 mm"
  },
  "SettingsDialog::143": {
   "ctx": "SettingsDialog",
-  "src": "Show Stream Stats During Gameplay"
+  "src": "(0.3 mm)"
  },
  "SettingsDialog::144": {
   "ctx": "SettingsDialog",
-  "src": "Register New"
+  "src": "Dpad Regular/Touch Combo:"
  },
  "SettingsDialog::145": {
   "ctx": "SettingsDialog",
-  "src": "Registered Consoles"
+  "src": "(L1+R1+dpad Up)"
  },
  "SettingsDialog::146": {
   "ctx": "SettingsDialog",
-  "src": "Auto-Connect"
+  "src": "Buttons By Position:"
  },
  "SettingsDialog::147": {
   "ctx": "SettingsDialog",
-  "src": "Delete"
+  "src": "Use buttons by position instead of by label"
  },
  "SettingsDialog::148": {
   "ctx": "SettingsDialog",
-  "src": "Delete Console"
+  "src": "Rumble Haptics:"
  },
  "SettingsDialog::149": {
   "ctx": "SettingsDialog",
-  "src": "Are you sure you want to delete this console?"
+  "src": "Off"
  },
  "SettingsDialog::150": {
   "ctx": "SettingsDialog",
-  "src": "Hidden Consoles"
+  "src": "Very Weak"
  },
  "SettingsDialog::151": {
   "ctx": "SettingsDialog",
-  "src": "Unhide"
+  "src": "Weak"
  },
  "SettingsDialog::152": {
   "ctx": "SettingsDialog",
-  "src": "Unhide Console"
+  "src": "Normal"
  },
  "SettingsDialog::153": {
   "ctx": "SettingsDialog",
-  "src": "Are you sure you want to unhide this console?"
+  "src": "Strong"
  },
  "SettingsDialog::154": {
   "ctx": "SettingsDialog",
-  "src": "Keyboard as controller"
+  "src": "Very Strong"
  },
  "SettingsDialog::155": {
   "ctx": "SettingsDialog",
-  "src": "Enable Mouse Touchpad"
+  "src": "(Normal)"
  },
  "SettingsDialog::156": {
   "ctx": "SettingsDialog",
-  "src": "Background Controller Events:"
+  "src": "True Haptics Intensity:"
  },
  "SettingsDialog::157": {
   "ctx": "SettingsDialog",
-  "src": "Process controller input when application is in background"
+  "src": "console setting"
  },
  "SettingsDialog::158": {
   "ctx": "SettingsDialog",
-  "src": "Dpad Touchpad Emulation"
+  "src": " % console setting"
  },
  "SettingsDialog::159": {
   "ctx": "SettingsDialog",
-  "src": "Dpad Touch Increment:"
+  "src": "(console setting)"
  },
  "SettingsDialog::160": {
   "ctx": "SettingsDialog",
-  "src": "%1 mm"
+  "src": "Current Profile: "
  },
  "SettingsDialog::161": {
   "ctx": "SettingsDialog",
-  "src": "(0.3 mm)"
+  "src": "Current Profile: default"
  },
  "SettingsDialog::162": {
   "ctx": "SettingsDialog",
-  "src": "Dpad Regular/Touch Combo:"
+  "src": "Manage Profiles"
  },
  "SettingsDialog::163": {
   "ctx": "SettingsDialog",
-  "src": "(L1+R1+dpad Up)"
+  "src": "Login to PSN"
  },
  "SettingsDialog::164": {
   "ctx": "SettingsDialog",
-  "src": "Buttons By Position:"
+  "src": "Clear PSN Token"
  },
  "SettingsDialog::165": {
   "ctx": "SettingsDialog",
-  "src": "Use buttons by position instead of by label"
+  "src": "Export settings to file"
  },
  "SettingsDialog::166": {
   "ctx": "SettingsDialog",
-  "src": "Rumble Haptics:"
+  "src": "Import settings from file"
  },
  "SettingsDialog::167": {
   "ctx": "SettingsDialog",
-  "src": "Off"
+  "src": "About %1-ng"
  },
  "SettingsDialog::168": {
   "ctx": "SettingsDialog",
-  "src": "Very Weak"
+  "src": "Verbose Logging (unchecked)"
  },
  "SettingsDialog::169": {
   "ctx": "SettingsDialog",
-  "src": "Weak"
+  "src": "Key Capture"
  },
  "SettingsDialog::170": {
   "ctx": "SettingsDialog",
-  "src": "Normal"
+  "src": "Press any key to configure button or click close"
  },
  "SettingsDialog::171": {
   "ctx": "SettingsDialog",
-  "src": "Strong"
+  "src": "Controller Capture"
  },
  "SettingsDialog::172": {
   "ctx": "SettingsDialog",
-  "src": "Very Strong"
+  "src": "Choose the controller by pressing any button on the controller"
  },
  "SettingsDialog::173": {
   "ctx": "SettingsDialog",
-  "src": "(Normal)"
- },
- "SettingsDialog::174": {
-  "ctx": "SettingsDialog",
-  "src": "True Haptics Intensity:"
- },
- "SettingsDialog::175": {
-  "ctx": "SettingsDialog",
-  "src": "console setting"
- },
- "SettingsDialog::176": {
-  "ctx": "SettingsDialog",
-  "src": " % console setting"
- },
- "SettingsDialog::177": {
-  "ctx": "SettingsDialog",
-  "src": "(console setting)"
- },
- "SettingsDialog::178": {
-  "ctx": "SettingsDialog",
-  "src": "Login to PSN"
- },
- "SettingsDialog::179": {
-  "ctx": "SettingsDialog",
-  "src": "Clear PSN Token"
- },
- "SettingsDialog::180": {
-  "ctx": "SettingsDialog",
-  "src": "Hole Punching Port Guessing:"
- },
- "SettingsDialog::181": {
-  "ctx": "SettingsDialog",
-  "src": "Force STUN port guessing"
- },
- "SettingsDialog::182": {
-  "ctx": "SettingsDialog",
-  "src": "Port Guess Count:"
- },
- "SettingsDialog::183": {
-  "ctx": "SettingsDialog",
-  "src": " guesses"
- },
- "SettingsDialog::184": {
-  "ctx": "SettingsDialog",
-  "src": "(75)"
- },
- "SettingsDialog::185": {
-  "ctx": "SettingsDialog",
-  "src": "Port Guess Socket Count:"
- },
- "SettingsDialog::186": {
-  "ctx": "SettingsDialog",
-  "src": " sockets"
- },
- "SettingsDialog::187": {
-  "ctx": "SettingsDialog",
-  "src": "(250)"
- },
- "SettingsDialog::188": {
-  "ctx": "SettingsDialog",
-  "src": "Current Profile: "
- },
- "SettingsDialog::189": {
-  "ctx": "SettingsDialog",
-  "src": "Current Profile: default"
- },
- "SettingsDialog::190": {
-  "ctx": "SettingsDialog",
-  "src": "Manage Profiles"
- },
- "SettingsDialog::191": {
-  "ctx": "SettingsDialog",
-  "src": "Export settings to file"
- },
- "SettingsDialog::192": {
-  "ctx": "SettingsDialog",
-  "src": "Import settings from file"
- },
- "SettingsDialog::193": {
-  "ctx": "SettingsDialog",
-  "src": "About %1-ng"
- },
- "SettingsDialog::194": {
-  "ctx": "SettingsDialog",
-  "src": "Sanitize Logs (checked)"
- },
- "SettingsDialog::195": {
-  "ctx": "SettingsDialog",
-  "src": "Verbose Logging (unchecked)"
- },
- "SettingsDialog::196": {
-  "ctx": "SettingsDialog",
-  "src": "Key Capture"
- },
- "SettingsDialog::197": {
-  "ctx": "SettingsDialog",
-  "src": "Press any key to configure button or click close"
- },
- "SettingsDialog::198": {
-  "ctx": "SettingsDialog",
-  "src": "Controller Capture"
- },
- "SettingsDialog::199": {
-  "ctx": "SettingsDialog",
-  "src": "Choose the controller by pressing any button on the controller"
- },
- "SettingsDialog::200": {
-  "ctx": "SettingsDialog",
   "src": "Controller Managed by Steam"
  },
- "SettingsDialog::201": {
+ "SettingsDialog::174": {
   "ctx": "SettingsDialog",
   "src": "This controller is managed by Steam.\nPlease use Steam to map controller or disable Steam Input for the controller before mapping here."
  },
@@ -2289,87 +2129,11 @@
  },
  "SteamShortcutDialog::10": {
   "ctx": "SteamShortcutDialog",
-  "src": "Custom Steam Base Path (Optional)"
+  "src": "Create non-Steam game"
  },
  "SteamShortcutDialog::11": {
   "ctx": "SteamShortcutDialog",
-  "src": "Choose new steam base path"
- },
- "SteamShortcutDialog::12": {
-  "ctx": "SteamShortcutDialog",
-  "src": "Create non-Steam game"
- },
- "SteamShortcutDialog::13": {
-  "ctx": "SteamShortcutDialog",
   "src": "Please Restart Steam"
- },
- "StreamMenuWindow::0": {
-  "ctx": "StreamMenuWindow",
-  "src": "% Volume"
- },
- "StreamMenuWindow::1": {
-  "ctx": "StreamMenuWindow",
-  "src": "Mic"
- },
- "StreamMenuWindow::2": {
-  "ctx": "StreamMenuWindow",
-  "src": "Zoom"
- },
- "StreamMenuWindow::3": {
-  "ctx": "StreamMenuWindow",
-  "src": "No Black Bars"
- },
- "StreamMenuWindow::4": {
-  "ctx": "StreamMenuWindow",
-  "src": " x"
- },
- "StreamMenuWindow::5": {
-  "ctx": "StreamMenuWindow",
-  "src": "Stretch"
- },
- "StreamMenuWindow::6": {
-  "ctx": "StreamMenuWindow",
-  "src": "Default"
- },
- "StreamMenuWindow::7": {
-  "ctx": "StreamMenuWindow",
-  "src": "High Quality"
- },
- "StreamMenuWindow::8": {
-  "ctx": "StreamMenuWindow",
-  "src": "HQ + Spatial"
- },
- "StreamMenuWindow::9": {
-  "ctx": "StreamMenuWindow",
-  "src": "HQ + Adv Spatial"
- },
- "StreamMenuWindow::10": {
-  "ctx": "StreamMenuWindow",
-  "src": "Custom"
- },
- "StreamMenuWindow::11": {
-  "ctx": "StreamMenuWindow",
-  "src": "Display"
- },
- "StreamMenuWindow::12": {
-  "ctx": "StreamMenuWindow",
-  "src": "Placebo"
- },
- "StreamMenuWindow::13": {
-  "ctx": "StreamMenuWindow",
-  "src": "Connected to <b>%1</b>"
- },
- "StreamMenuWindow::14": {
-  "ctx": "StreamMenuWindow",
-  "src": "Connecting to <b>%1</b>"
- },
- "StreamMenuWindow::15": {
-  "ctx": "StreamMenuWindow",
-  "src": "packet loss"
- },
- "StreamMenuWindow::16": {
-  "ctx": "StreamMenuWindow",
-  "src": "dropped frames"
  },
  "StreamView::0": {
   "ctx": "StreamView",
@@ -2409,114 +2173,82 @@
  },
  "StreamView::9": {
   "ctx": "StreamView",
-  "src": "queue depth avg"
+  "src": "packet loss"
  },
  "StreamView::10": {
   "ctx": "StreamView",
-  "src": "pending frame age"
+  "src": "dropped frames"
  },
  "StreamView::11": {
   "ctx": "StreamView",
-  "src": "%1 ms"
+  "src": "% Volume"
  },
  "StreamView::12": {
   "ctx": "StreamView",
-  "src": "packet loss"
+  "src": "Mic"
  },
  "StreamView::13": {
   "ctx": "StreamView",
-  "src": "dropped frames"
+  "src": "Zoom"
  },
  "StreamView::14": {
   "ctx": "StreamView",
-  "src": "lost frames"
+  "src": "No Black Bars"
  },
  "StreamView::15": {
   "ctx": "StreamView",
-  "src": "% Volume"
+  "src": " x"
  },
  "StreamView::16": {
   "ctx": "StreamView",
-  "src": "Mic"
+  "src": "Stretch"
  },
  "StreamView::17": {
   "ctx": "StreamView",
-  "src": "Zoom"
+  "src": "Default"
  },
  "StreamView::18": {
   "ctx": "StreamView",
-  "src": "No Black Bars"
+  "src": "High Quality"
  },
  "StreamView::19": {
   "ctx": "StreamView",
-  "src": " x"
+  "src": "Custom"
  },
  "StreamView::20": {
   "ctx": "StreamView",
-  "src": "Stretch"
+  "src": "Display"
  },
  "StreamView::21": {
   "ctx": "StreamView",
-  "src": "Default"
+  "src": "Placebo"
  },
  "StreamView::22": {
   "ctx": "StreamView",
-  "src": "High Quality"
+  "src": "Connected to <b>%1</b>"
  },
  "StreamView::23": {
   "ctx": "StreamView",
-  "src": "HQ + Spatial"
+  "src": "Connecting to <b>%1</b>"
  },
  "StreamView::24": {
   "ctx": "StreamView",
-  "src": "HQ + Adv Spatial"
+  "src": "Disconnect Session"
  },
  "StreamView::25": {
   "ctx": "StreamView",
-  "src": "Custom"
+  "src": "Do you want the Console to go into sleep mode?"
  },
  "StreamView::26": {
   "ctx": "StreamView",
-  "src": "Display"
+  "src": "Sleep"
  },
  "StreamView::27": {
   "ctx": "StreamView",
-  "src": "Placebo"
+  "src": "No"
  },
  "StreamView::28": {
   "ctx": "StreamView",
-  "src": "Connected to <b>%1</b>"
- },
- "StreamView::29": {
-  "ctx": "StreamView",
-  "src": "Connecting to <b>%1</b>"
- },
- "StreamView::30": {
-  "ctx": "StreamView",
-  "src": "Disconnect Session"
- },
- "StreamView::31": {
-  "ctx": "StreamView",
-  "src": "Do you want the Console to go into sleep mode?"
- },
- "StreamView::32": {
-  "ctx": "StreamView",
-  "src": "Sleep"
- },
- "StreamView::33": {
-  "ctx": "StreamView",
-  "src": "No"
- },
- "StreamView::34": {
-  "ctx": "StreamView",
   "src": "Console Login PIN"
- },
- "StreamView::35": {
-  "ctx": "StreamView",
-  "src": "Cancel"
- },
- "StreamView::36": {
-  "ctx": "StreamView",
-  "src": "OK"
  }
 }

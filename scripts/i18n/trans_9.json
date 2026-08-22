@@ -1,5 +1,13 @@
 {
- "SettingsDialog::32": "界面语言：",
- "SettingsDialog::33": "跟随系统",
- "SettingsDialog::34": "（重启生效）"
+ "PlaceboSettingsDialog::29": "(EwaLanczosSharp)",
+ "PlaceboSettingsDialog::41": "帧混合器：",
+ "PlaceboSettingsDialog::42": "无",
+ "PlaceboSettingsDialog::43": "Linear",
+ "PlaceboSettingsDialog::44": "Cubic",
+ "PlaceboSettingsDialog::45": "（过采样）",
+ "SettingsDialog::30": "直播模式（隐藏敏感信息）",
+ "SettingsDialog::31": "界面语言：",
+ "SettingsDialog::32": "跟随系统",
+ "SettingsDialog::33": "（重启生效）",
+ "SettingsDialog::64": "（串流分辨率）"
 }
