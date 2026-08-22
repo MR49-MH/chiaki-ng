@@ -88,7 +88,9 @@ static int64_t qpc_now_us()
 	}();
 	LARGE_INTEGER c;
 	QueryPerformanceCounter(&c);
-	return c.QuadPart * 1000000LL / freq;
+	// 先除后乘：uptime×freq×1e6 会在开机约 10.7 天(10MHz QPC)时溢出 int64，
+	// 导致 qpc_write_us 回绕成负数、读取端新鲜度判断永远失败。
+	return c.QuadPart / freq * 1000000LL + c.QuadPart % freq * 1000000LL / freq;
 }
 
 #endif // Q_OS_WINDOWS
