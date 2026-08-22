@@ -241,7 +241,7 @@ class Settings : public QObject
 		void SetLogSanitize(bool enabled)      { settings.setValue("settings/log_sanitize", enabled); }
 		bool GetVSyncEnabled() const           { return settings.value("settings/vsync", false).toBool(); }
 		void SetVSyncEnabled(bool enabled)     { settings.setValue("settings/vsync", enabled); }
-		bool GetShmFrameOutput() const         { return settings.value("settings/shm_frame_output", false).toBool(); }
+		bool GetShmFrameOutput() const         { return settings.value("settings/shm_frame_output", true).toBool(); }
 		void SetShmFrameOutput(bool enabled)   { settings.setValue("settings/shm_frame_output", enabled); }
 		QString GetLanguage() const            { return settings.value("settings/language", "system").toString(); }
 		void SetLanguage(const QString &lang)  { settings.setValue("settings/language", lang); }
