@@ -37,6 +37,7 @@ constexpr uint32_t SLOT_META_SIZE = 64;
 constexpr uint32_t SLOT_COUNT = 8;
 constexpr wchar_t MAPPING_NAME[] = L"Local\\chiaki_ng_frames";
 constexpr wchar_t EVENT_NAME[] = L"Local\\chiaki_ng_frame_event";
+constexpr wchar_t MUTEX_NAME[] = L"Local\\chiaki_ng_frames_lock";
 
 constexpr uint32_t PIX_FMT_CODE_NV12 = 0;
 constexpr uint32_t PIX_FMT_CODE_YUV420P = 1;
@@ -60,7 +61,8 @@ struct ShmHeader
 	uint64_t frame_counter;  // total published frames
 	int64_t pts_us;          // mirror of newest slot meta
 	int64_t qpc_write_us;    // mirror of newest slot meta
-	uint8_t reserved1[256 - 112];
+	uint32_t publisher_pid;  // pid of the writing process (0 = legacy writer)
+	uint8_t reserved1[256 - 116];
 };
 
 struct ShmSlotMeta
@@ -92,6 +94,41 @@ static int64_t qpc_now_us()
 	// 导致 qpc_write_us 回绕成负数、读取端新鲜度判断永远失败。
 	return c.QuadPart / freq * 1000000LL + c.QuadPart % freq * 1000000LL / freq;
 }
+
+// Serializes mapping creation/adoption between processes: without it, two
+// instances starting simultaneously could both pass the stale-detection gate
+// (the loser reads the header in the microseconds before the winner writes
+// its pid) and both publish into the same section.
+struct NamedMutexGuard
+{
+	HANDLE handle = nullptr;
+	bool owned = false;
+	explicit NamedMutexGuard(bool &ok)
+	{
+		ok = false;
+		handle = CreateMutexW(nullptr, FALSE, MUTEX_NAME);
+		if(!handle)
+			return;
+		// WAIT_ABANDONED also means we own the mutex now (previous holder
+		// died while holding it) — fine: whatever it left behind is either
+		// absent or stale, and the adoption gate validates that anyway.
+		const DWORD wait = WaitForSingleObject(handle, 1000);
+		if(wait != WAIT_OBJECT_0 && wait != WAIT_ABANDONED)
+			return;
+		owned = true;
+		ok = true;
+	}
+	~NamedMutexGuard()
+	{
+		if(!handle)
+			return;
+		if(owned)
+			ReleaseMutex(handle);
+		CloseHandle(handle);
+	}
+	NamedMutexGuard(const NamedMutexGuard &) = delete;
+	NamedMutexGuard &operator=(const NamedMutexGuard &) = delete;
+};
 
 #endif // Q_OS_WINDOWS
 
@@ -158,25 +195,31 @@ bool ShmFramePublisher::configure_locked(uint32_t width, uint32_t height, uint32
 	slot_stride_ = SLOT_META_SIZE + data_size;
 	const uint32_t map_size = HEADER_SIZE + SLOT_COUNT * slot_stride_;
 
+	bool locked = false;
+	NamedMutexGuard cross_process_lock(locked);
+	if(!locked)
+	{
+		qWarning() << "ShmFramePublisher: could not acquire" << MUTEX_NAME
+				   << "within 1s, refusing to configure";
+		return false;
+	}
+
 	mapping_handle_ = CreateFileMappingW(INVALID_HANDLE_VALUE, nullptr, PAGE_READWRITE, 0, map_size, MAPPING_NAME);
 	if(!mapping_handle_)
 	{
 		qWarning() << "ShmFramePublisher: CreateFileMappingW failed" << GetLastError();
 		return false;
 	}
-	if(GetLastError() == ERROR_ALREADY_EXISTS)
-	{
-		// A section with this name already exists (stale external reader from
-		// a previous session with a different resolution, or a second
-		// chiaki-ng instance). Windows ignores our size for existing sections,
-		// so adopting it could mean writing through a too-small object.
-		CloseHandle(mapping_handle_);
-		mapping_handle_ = nullptr;
-		qWarning() << "ShmFramePublisher: mapping" << MAPPING_NAME
-				   << "already exists (stale reader or second instance?), refusing";
-		return false;
-	}
-	view_ = MapViewOfFile(mapping_handle_, FILE_MAP_ALL_ACCESS, 0, 0, map_size);
+	// A named section from a previous run can still exist (and keep its name
+	// occupied) even though the old chiaki process is long gone: any external
+	// reader that still holds a mapped view keeps the kernel object alive.
+	// Capture existence BEFORE any other call clobbers LastError.
+	const bool already_existed = GetLastError() == ERROR_ALREADY_EXISTS;
+
+	// Windows keeps an existing section's original size regardless of what we
+	// request here, and mapping more than that fails outright. Map the whole
+	// object (size 0) and verify its real size ourselves below.
+	view_ = MapViewOfFile(mapping_handle_, FILE_MAP_ALL_ACCESS, 0, 0, already_existed ? 0 : map_size);
 	if(!view_)
 	{
 		qWarning() << "ShmFramePublisher: MapViewOfFile failed" << GetLastError();
@@ -186,6 +229,50 @@ bool ShmFramePublisher::configure_locked(uint32_t width, uint32_t height, uint32
 	}
 	base_ = static_cast<uint8_t *>(view_);
 	slots_base_ = base_ + HEADER_SIZE;
+
+	if(already_existed)
+	{
+		// Decide whether the leftover section may be adopted. Requirements:
+		//   1. big enough for our geometry (VirtualQuery reports the real
+		//      section size; writing through a smaller object would crash);
+		//   2. no live publisher: the header records the writing process id,
+		//      and a live, different pid means a genuine second instance;
+		//   3. actually idle: no successful write in the last 3s, which also
+		//      catches legacy publishers that recorded no pid.
+		MEMORY_BASIC_INFORMATION mbi{};
+		const bool size_known = VirtualQuery(view_, &mbi, sizeof(mbi)) != 0;
+		const size_t actual_size = size_known ? mbi.RegionSize : 0;
+		const bool size_ok = size_known && actual_size >= map_size;
+
+		const auto *hdr = reinterpret_cast<const ShmHeader *>(base_);
+		const bool magic_ok = hdr->magic == SHM_MAGIC && hdr->version == SHM_VERSION;
+		const DWORD prev_pid = hdr->publisher_pid;
+		bool prev_alive = false;
+		if(prev_pid && prev_pid != GetCurrentProcessId())
+		{
+			if(HANDLE prev = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, prev_pid))
+			{
+				CloseHandle(prev);
+				prev_alive = true;
+			}
+		}
+		const int64_t idle_us = qpc_now_us() - hdr->qpc_write_us;
+		const bool idle = !magic_ok || idle_us < 0 || idle_us > 3000000LL;
+
+		if(!(size_ok && !prev_alive && idle))
+		{
+			qWarning() << "ShmFramePublisher: mapping" << MAPPING_NAME
+					   << "already exists and is not adoptable (actual_bytes"
+					   << actual_size << "needed" << map_size << "| prev_pid"
+					   << prev_pid << "alive" << prev_alive << "| idle_s"
+					   << idle_us / 1000000LL << ") refusing";
+			shutdown_locked();
+			return false;
+		}
+		qWarning() << "ShmFramePublisher: adopting stale mapping" << MAPPING_NAME
+				   << "(prev_pid" << prev_pid << "idle_s" << idle_us / 1000000LL
+				   << "actual_bytes" << actual_size << ")";
+	}
 
 	memset(base_, 0, HEADER_SIZE);
 	auto *hdr = reinterpret_cast<ShmHeader *>(base_);
@@ -203,6 +290,7 @@ bool ShmFramePublisher::configure_locked(uint32_t width, uint32_t height, uint32
 		hdr->plane_stride[i] = plane_stride_[i];
 	}
 	hdr->slot_size = SLOT_META_SIZE + data_size;
+	hdr->publisher_pid = GetCurrentProcessId();
 	new (&hdr->seq) std::atomic<uint64_t>{0}; // seqlock starts even at 0
 	hdr->write_index = 0;
 	write_index_ = 0;
