@@ -561,6 +561,7 @@ void ShmFramePublisher::PublishSync(const AVFrame *frame, int64_t pts_us)
 		SetEvent(event_handle_);
 
 	av_frame_free(&sw_tmp);
+#endif
 }
 
 ShmFramePublisher::~ShmFramePublisher()
