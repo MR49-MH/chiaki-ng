@@ -6,8 +6,11 @@
 #include <QtGlobal>
 
 #include <atomic>
+#include <condition_variable>
 #include <cstdint>
+#include <deque>
 #include <mutex>
+#include <thread>
 
 struct AVFrame;
 
@@ -35,12 +38,16 @@ class ShmFramePublisher
 		void set_enabled(bool enabled);
 		bool enabled() const { return enabled_.load(std::memory_order_relaxed); }
 
-		// Publish one frame. Accepts hardware frames (a GPU->CPU transfer is
-		// performed internally). Never throws; failures are counted only.
+		// Publish one frame. Enqueues a new reference to the (refcounted)
+		// frame and returns immediately; the actual GPU->CPU transfer and
+		// shared-memory write happen on the internal publisher thread, so the
+		// decode->present chain is never blocked and never races mapping
+		// teardown. Never throws; failures are counted only.
 		//
 		// Thread-safety: publish() runs on the frame thread while
 		// set_enabled(false) may arrive on the GUI thread at session quit;
-		// mutex_ serializes mapping teardown against in-flight publishes.
+		// set_enabled(false) drains the queue, joins the worker and only then
+		// unmaps, so no write can outlive the mapping.
 		void publish(const AVFrame *frame, int64_t pts_us);
 
 		uint64_t published_frames() const { return published_frames_; }
@@ -55,6 +62,11 @@ class ShmFramePublisher
 		// Both called with mutex_ held.
 		bool configure_locked(uint32_t width, uint32_t height, uint32_t pix_fmt);
 		void shutdown_locked();
+
+		// StopWorkerAndShutdown: drain the queue, set the exit flag, join the
+		// worker thread and only then unmap. Must be called with NO locks
+		// held (it joins the worker, which needs mutex_ to finish).
+		void StopWorkerAndShutdown();
 
 		std::atomic<bool> enabled_{false};
 		bool configured_ = false;
@@ -81,6 +93,7 @@ class ShmFramePublisher
 		uint32_t last_fail_h_ = 0;
 		uint32_t last_fail_fmt_ = UINT32_MAX;
 		uint64_t last_fail_qpc_us_ = 0;
+		uint64_t last_transfer_fail_qpc_us_ = 0; // throttle GPU-transfer warnings
 
 #if defined(Q_OS_WINDOWS)
 		void *mapping_handle_ = nullptr;
@@ -90,6 +103,23 @@ class ShmFramePublisher
 		uint8_t *slots_base_ = nullptr; // base_ + header_size
 		uint32_t slot_stride_ = 0;
 		uint64_t write_index_ = 0;
+
+		// Async publisher worker. publish() enqueues under mutex_; the worker
+		// performs transfer + slot write. thread_exit_ is guarded by mutex_;
+		// join happens outside the lock (StopWorkerAndShutdown).
+		struct QueuedFrame
+		{
+			AVFrame *frame;
+			int64_t pts_us;
+		};
+		static constexpr size_t QUEUE_MAX = 2; // drop-oldest beyond this
+		std::thread publisher_thread_;
+		std::condition_variable queue_cv_;
+		std::deque<QueuedFrame> queue_;
+		bool thread_exit_ = false;
+
+		void PublisherLoop();
+		void PublishSync(const AVFrame *frame, int64_t pts_us);
 #endif
 };
 

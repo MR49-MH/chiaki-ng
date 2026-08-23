@@ -143,15 +143,70 @@ ShmFramePublisher &ShmFramePublisher::instance()
 void ShmFramePublisher::set_enabled(bool enabled)
 {
 #ifdef Q_OS_WINDOWS
-	std::lock_guard<std::mutex> lock(mutex_);
-#endif
-	if(enabled_.load(std::memory_order_relaxed) == enabled)
-		return;
-	enabled_.store(enabled, std::memory_order_relaxed);
-#ifdef Q_OS_WINDOWS
+	{
+		std::lock_guard<std::mutex> lock(mutex_);
+		if(enabled_.load(std::memory_order_relaxed) == enabled)
+			return;
+		enabled_.store(enabled, std::memory_order_relaxed);
+		if(enabled_)
+		{
+			// (Re)spawn the worker; a previous stop() joined it.
+			thread_exit_ = false;
+			if(!publisher_thread_.joinable())
+				publisher_thread_ = std::thread(&ShmFramePublisher::PublisherLoop, this);
+		}
+	}
 	if(!enabled_)
-		shutdown_locked();
+		StopWorkerAndShutdown();
 	qInfo() << "ShmFramePublisher:" << (enabled ? "enabled" : "disabled");
+#endif
+}
+
+void ShmFramePublisher::publish(const AVFrame *frame, int64_t pts_us)
+{
+#ifdef Q_OS_WINDOWS
+	if(!enabled_.load(std::memory_order_relaxed) || !frame)
+		return;
+
+	// Producer side only: take a new reference (frames from
+	// avcodec_receive_frame are refcounted, hw frames included) and hand it to
+	// the worker. av_hwframe_transfer_data and the plane copies run off this
+	// thread, so the decode->present chain never waits on them.
+	AVFrame *ref = av_frame_clone(const_cast<AVFrame *>(frame));
+	if(!ref)
+	{
+		++dropped_frames_;
+		return;
+	}
+
+	bool enqueue_failed = false;
+	{
+		std::lock_guard<std::mutex> lock(mutex_);
+		if(!enabled_.load(std::memory_order_relaxed) || thread_exit_)
+		{
+			enqueue_failed = true;
+		}
+		else
+		{
+			while(queue_.size() >= QUEUE_MAX)
+			{
+				// Reader can't keep up (or worker is busy): drop the OLDEST
+				// pending frame, never block the decode thread.
+				av_frame_free(&queue_.front().frame);
+				queue_.pop_front();
+				++dropped_frames_;
+			}
+			queue_.push_back({ref, pts_us});
+			queue_cv_.notify_one();
+		}
+	}
+	if(enqueue_failed)
+	{
+		av_frame_free(&ref);
+		++dropped_frames_;
+	}
+#else
+	++dropped_frames_;
 #endif
 }
 
@@ -329,11 +384,53 @@ void ShmFramePublisher::shutdown_locked()
 	slot_stride_ = 0;
 }
 
-void ShmFramePublisher::publish(const AVFrame *frame, int64_t pts_us)
+void ShmFramePublisher::StopWorkerAndShutdown()
 {
-	if(!enabled_.load(std::memory_order_relaxed) || !frame)
-		return;
+#ifdef Q_OS_WINDOWS
+	{
+		std::lock_guard<std::mutex> lock(mutex_);
+		enabled_.store(false, std::memory_order_relaxed);
+		while(!queue_.empty())
+		{
+			av_frame_free(&queue_.front().frame);
+			queue_.pop_front();
+		}
+		thread_exit_ = true;
+		queue_cv_.notify_all();
+	}
+	// Join WITHOUT holding mutex_: the worker needs mutex_ one last time to
+	// observe thread_exit_ before it can exit.
+	if(publisher_thread_.joinable())
+		publisher_thread_.join();
 
+	std::lock_guard<std::mutex> lock(mutex_);
+	shutdown_locked();
+#endif
+}
+
+void ShmFramePublisher::PublisherLoop()
+{
+#ifdef Q_OS_WINDOWS
+	for(;;)
+	{
+		QueuedFrame qf {nullptr, 0};
+		{
+			std::unique_lock<std::mutex> lock(mutex_);
+			queue_cv_.wait(lock, [&] { return thread_exit_ || !queue_.empty(); });
+			if(thread_exit_)
+				return;
+			qf = queue_.front();
+			queue_.pop_front();
+		}
+		PublishSync(qf.frame, qf.pts_us);
+		av_frame_free(&qf.frame);
+	}
+#endif
+}
+
+void ShmFramePublisher::PublishSync(const AVFrame *frame, int64_t pts_us)
+{
+#ifdef Q_OS_WINDOWS
 	// GPU->CPU transfer runs outside the lock: it can take milliseconds and
 	// must not stall a concurrent set_enabled(false) on the GUI thread.
 	const AVFrame *src = frame;
@@ -348,7 +445,12 @@ void ShmFramePublisher::publish(const AVFrame *frame, int64_t pts_us)
 		}
 		if(av_hwframe_transfer_data(sw_tmp, const_cast<AVFrame *>(frame), 0) < 0)
 		{
-			qWarning() << "ShmFramePublisher: av_hwframe_transfer_data failed";
+			const uint64_t now = qpc_now_us();
+			if(now - last_transfer_fail_qpc_us_ >= 5000000LL) // throttle: don't spam at frame rate
+			{
+				qWarning() << "ShmFramePublisher: av_hwframe_transfer_data failed";
+				last_transfer_fail_qpc_us_ = now;
+			}
 			av_frame_free(&sw_tmp);
 			++dropped_frames_;
 			return;
@@ -363,7 +465,21 @@ void ShmFramePublisher::publish(const AVFrame *frame, int64_t pts_us)
 	else if(src->format == AV_PIX_FMT_YUV420P)
 		fmt_code = PIX_FMT_CODE_YUV420P;
 
-	if(fmt_code == UINT32_MAX || src->width <= 0 || src->height <= 0)
+	bool geometry_bad = fmt_code == UINT32_MAX || src->width <= 0 || src->height <= 0;
+	if(!geometry_bad)
+	{
+		const uint32_t planes = (fmt_code == PIX_FMT_CODE_NV12) ? 2u : 3u;
+		for(uint32_t p = 0; p < planes; ++p)
+		{
+			// a negative stride would walk out of the buffer backwards
+			if(!src->data[p] || src->linesize[p] <= 0)
+			{
+				geometry_bad = true;
+				break;
+			}
+		}
+	}
+	if(geometry_bad)
 	{
 		++dropped_frames_;
 		av_frame_free(&sw_tmp);
@@ -450,16 +566,15 @@ void ShmFramePublisher::publish(const AVFrame *frame, int64_t pts_us)
 ShmFramePublisher::~ShmFramePublisher()
 {
 #ifdef Q_OS_WINDOWS
-	std::lock_guard<std::mutex> lock(mutex_);
-	shutdown_locked();
+	StopWorkerAndShutdown();
 #endif
 }
 
 #else // !Q_OS_WINDOWS — no-op stubs so call sites need no guards
+// publish() is defined above for all platforms (it no-ops when not enabled).
 
 bool ShmFramePublisher::configure_locked(uint32_t, uint32_t, uint32_t) { return false; }
 void ShmFramePublisher::shutdown_locked() {}
-void ShmFramePublisher::publish(const AVFrame *, int64_t) { ++dropped_frames_; }
 ShmFramePublisher::~ShmFramePublisher() {}
 
 #endif
