@@ -143,6 +143,9 @@ class StreamSession : public QObject
 	Q_PROPERTY(bool connected READ GetConnected NOTIFY ConnectedChanged)
 	Q_PROPERTY(double measuredBitrate READ GetMeasuredBitrate NOTIFY MeasuredBitrateChanged)
 	Q_PROPERTY(double averagePacketLoss READ GetAveragePacketLoss NOTIFY AveragePacketLossChanged)
+	// Round-trip time measured by the Senkusha handshake at session start
+	// (baseline only — the streaming protocol has no live in-session RTT).
+	Q_PROPERTY(double rttMs READ GetRttMs NOTIFY RttMsChanged)
 	Q_PROPERTY(bool muted READ GetMuted WRITE SetMuted NOTIFY MutedChanged)
 	Q_PROPERTY(bool cantDisplay READ GetCantDisplay NOTIFY CantDisplayChanged)
 
@@ -163,6 +166,7 @@ class StreamSession : public QObject
 		int audio_volume;
 		double measured_bitrate = 0;
 		double average_packet_loss = 0;
+		double rtt_ms = 0;
 		QList<double> packet_loss_history;
 		bool cant_display = false;
 		int haptics_handheld;
@@ -299,6 +303,7 @@ class StreamSession : public QObject
 		bool GetConnected() { return connected; }
 		double GetMeasuredBitrate()	{ return measured_bitrate; }
 		double GetAveragePacketLoss()	{ return average_packet_loss; }
+		double GetRttMs() { return rtt_ms; }
 		bool GetMuted()	{ return muted; }
 		void SetMuted(bool enable)	{ if (enable != muted) ToggleMute(); }
 		void SetAudioVolume(int volume) { audio_volume = volume; }
@@ -337,6 +342,7 @@ class StreamSession : public QObject
 		void ConnectedChanged();
 		void MeasuredBitrateChanged();
 		void AveragePacketLossChanged();
+		void RttMsChanged();
 		void MutedChanged();
 		void CantDisplayChanged(bool cant_display);
 

@@ -28,6 +28,9 @@ class StreamStatsProvider : public QObject
 	Q_PROPERTY(double pullMsLast MEMBER pull_ms_last NOTIFY statsChanged)
 	Q_PROPERTY(double pullMsAvg MEMBER pull_ms_avg NOTIFY statsChanged)
 	Q_PROPERTY(double pullMsMax MEMBER pull_ms_max NOTIFY statsChanged)
+	// < 0 in the current refresh window means no GPU->CPU transfer happened
+	// (software decode or zero-copy hw path) — QML shows "n/a" instead of a
+	// misleading 0.0 ms.
 	Q_PROPERTY(double xferMsLast MEMBER xfer_ms_last NOTIFY statsChanged)
 	Q_PROPERTY(double xferMsMax MEMBER xfer_ms_max NOTIFY statsChanged)
 	Q_PROPERTY(bool shmActive MEMBER shm_active NOTIFY statsChanged)
@@ -35,6 +38,9 @@ class StreamStatsProvider : public QObject
 	Q_PROPERTY(quint64 shmDropped MEMBER shm_dropped NOTIFY statsChanged)
 	Q_PROPERTY(quint32 shmQueue MEMBER shm_queue NOTIFY statsChanged)
 	Q_PROPERTY(double shmWriteMs MEMBER shm_write_ms NOTIFY statsChanged)
+	// Largest interval between consecutive decoded frames within a refresh
+	// window — frame pacing spike detector (the average is just 1000/fps).
+	Q_PROPERTY(double gapMsMax MEMBER gap_ms_max NOTIFY statsChanged)
 	Q_PROPERTY(QString streamInfo MEMBER stream_info NOTIFY statsChanged)
 
 	public:
@@ -42,8 +48,10 @@ class StreamStatsProvider : public QObject
 		static StreamStatsProvider &instance();
 
 		// Frame thread: one call per decoded frame pulled off the decoder.
+		// decode_ms is the avcodec_send_packet duration measured in the lib
+		// (the real decode cost); xfer_ms < 0 when no hw->sw copy happened.
 		void OnFrame(quint32 width, quint32 height,
-				double pull_ms, double xfer_ms, qint32 frames_lost);
+				double decode_ms, double xfer_ms, qint32 frames_lost);
 		// GUI thread, at session creation.
 		void SetStreamInfo(const QString &decoder_name, const QString &codec_name);
 
@@ -70,6 +78,8 @@ class StreamStatsProvider : public QObject
 		std::atomic<quint32> xfer_count_{0};
 		std::atomic<quint32> xfer_max_us_{0};
 		std::atomic<quint32> xfer_last_us_{0};
+		std::atomic<quint64> last_frame_us_{0};
+		std::atomic<quint32> gap_max_us_{0};
 		std::atomic<quint32> last_w_{0};
 		std::atomic<quint32> last_h_{0};
 
@@ -93,6 +103,7 @@ class StreamStatsProvider : public QObject
 		quint64 shm_dropped = 0;
 		quint32 shm_queue = 0;
 		double shm_write_ms = 0.0;
+		double gap_ms_max = 0.0;
 		QString stream_info;
 };
 

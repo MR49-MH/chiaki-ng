@@ -1,6 +1,8 @@
 
 #include <chiaki/ffmpegdecoder.h>
 
+#include <chiaki/time.h>
+
 #include <libavcodec/avcodec.h>
 #include <libavutil/pixdesc.h>
 
@@ -30,6 +32,7 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_ffmpeg_decoder_init(ChiakiFfmpegDecoder *de
 	decoder->hdr_enabled = codec == CHIAKI_CODEC_H265_HDR;
 	decoder->frames_lost = 0;
 	decoder->frame_recovered = false;
+	decoder->last_decode_ms = 0.0;
 
 	decoder->hw_device_ctx = hw_device_ctx ? av_buffer_ref(hw_device_ctx) : NULL;
 	decoder->hw_pix_fmt = AV_PIX_FMT_NONE;
@@ -124,8 +127,14 @@ CHIAKI_EXPORT bool chiaki_ffmpeg_decoder_video_sample_cb(uint8_t *buf, size_t bu
 	packet->data = buf;
 	packet->size = buf_size;
 	int r;
+	uint64_t decode_t0;
 send_packet:
+	// The actual decode work happens inside send_packet (it blocks until the
+	// decoder emits output); measure it here. pull_frame on the GUI thread
+	// only pops the finished frame, so it cannot see this cost.
+	decode_t0 = chiaki_time_now_monotonic_us();
 	r = avcodec_send_packet(decoder->codec_context, packet);
+	decoder->last_decode_ms = (chiaki_time_now_monotonic_us() - decode_t0) / 1000.0;
 	if(r != 0)
 	{
 		if(r == AVERROR(EAGAIN))
@@ -207,6 +216,14 @@ CHIAKI_EXPORT AVFrame *chiaki_ffmpeg_decoder_pull_frame(ChiakiFfmpegDecoder *dec
 	chiaki_mutex_unlock(&decoder->mutex);
 
 	return frame;
+}
+
+CHIAKI_EXPORT double chiaki_ffmpeg_decoder_get_last_decode_ms(ChiakiFfmpegDecoder *decoder)
+{
+	chiaki_mutex_lock(&decoder->mutex);
+	const double ms = decoder->last_decode_ms;
+	chiaki_mutex_unlock(&decoder->mutex);
+	return ms;
 }
 
 CHIAKI_EXPORT enum AVPixelFormat chiaki_ffmpeg_decoder_get_pixel_format(ChiakiFfmpegDecoder *decoder)

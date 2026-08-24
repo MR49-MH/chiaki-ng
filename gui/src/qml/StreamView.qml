@@ -196,30 +196,6 @@ Item {
         id: streamStats
         anchors.fill: parent
         visible: Chiaki.settings.showStreamStats && !menuView.visible && !sessionLoading && !sessionError && !(Chiaki.settings.audioVideoDisabled & 0x02)
-        Label {
-            anchors {
-                right: statsConsoleNameLabel.right
-                bottom: statsConsoleNameLabel.top
-                bottomMargin: 5
-                rightMargin: 5
-
-            }
-            text: "Mbps"
-            font.pixelSize: 18
-            visible: Chiaki.session
-
-            Label {
-                anchors {
-                    right: parent.left
-                    baseline: parent.baseline
-                    rightMargin: 5
-                }
-                text: visible ? Chiaki.session.measuredBitrate.toFixed(1) : ""
-                color: Material.accent
-                font.bold: true
-                font.pixelSize: 28
-            }
-        }
 
         Label {
             id: statsConsoleNameLabel
@@ -237,6 +213,51 @@ Item {
                     bottom: parent.bottom
                     rightMargin: 5
                 }
+
+                Label {
+                    id: statsBitrateRow
+                    text: qsTr("Mbps")
+                    font.pixelSize: 15
+                    opacity: parent.visible
+                    visible: opacity
+
+                    Behavior on opacity { NumberAnimation { duration: 250 } }
+
+                    Label {
+                        anchors {
+                            right: parent.left
+                            baseline: parent.baseline
+                            rightMargin: 5
+                        }
+                        text: visible && Chiaki.session ? Chiaki.session.measuredBitrate.toFixed(1) : ""
+                        color: Material.accent
+                        font.bold: true
+                        font.pixelSize: 18
+                    }
+                }
+
+                Label {
+                    id: statsRttRow
+                    text: qsTr("rtt ms")
+                    font.pixelSize: 15
+                    opacity: parent.visible
+                    visible: opacity
+
+                    Behavior on opacity { NumberAnimation { duration: 250 } }
+
+                    Label {
+                        anchors {
+                            right: parent.left
+                            baseline: parent.baseline
+                            rightMargin: 5
+                        }
+                        text: visible && Chiaki.session ? Chiaki.session.rttMs.toFixed(1) : ""
+                        color: Material.accent
+                        font.bold: true
+                        font.pixelSize: 18
+                    }
+                }
+
                 RowLayout {
                     Layout.alignment: Qt.AlignRight
                     Label {
@@ -307,8 +328,30 @@ Item {
                 }
 
                 Label {
+                    id: statsGapRow
+                    text: qsTr("gap ms")
+                    font.pixelSize: 15
+                    opacity: parent.visible
+                    visible: opacity
+
+                    Behavior on opacity { NumberAnimation { duration: 250 } }
+
+                    Label {
+                        anchors {
+                            right: parent.left
+                            baseline: parent.baseline
+                            rightMargin: 5
+                        }
+                        text: visible ? StreamStats.gapMsMax.toFixed(1) : ""
+                        color: "#ffcc80" // Material.Orange, spikes deserve attention
+                        font.bold: true
+                        font.pixelSize: 18
+                    }
+                }
+
+                Label {
                     id: statsPullRow
-                    text: qsTr("pull ms")
+                    text: qsTr("dec ms")
                     font.pixelSize: 15
                     opacity: parent.visible
                     visible: opacity
@@ -343,7 +386,9 @@ Item {
                             baseline: parent.baseline
                             rightMargin: 5
                         }
-                        text: visible ? "%1 / %2".arg(StreamStats.xferMsLast.toFixed(1)).arg(StreamStats.xferMsMax.toFixed(1)) : ""
+                        text: visible ? (StreamStats.xferMsLast < 0
+                                ? qsTr("n/a")
+                                : "%1 / %2".arg(StreamStats.xferMsLast.toFixed(1)).arg(StreamStats.xferMsMax.toFixed(1))) : ""
                         color: Material.accent
                         font.bold: true
                         font.pixelSize: 18

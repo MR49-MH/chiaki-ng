@@ -30,8 +30,6 @@
 #include <QDesktopServices>
 #include <QtConcurrent>
 
-#include <chrono>
-
 #define PSN_DEVICES_TRIES 2
 #define MAX_PSN_RECONNECT_TRIES 6
 #define PSN_INTERNET_WAIT_SECONDS 5
@@ -790,12 +788,14 @@ void QmlBackend::createSession(const StreamSessionConnectInfo &connect_info)
             return;
         }
         int32_t frames_lost;
-        const auto pull_t0 = std::chrono::steady_clock::now();
         AVFrame *frame = chiaki_ffmpeg_decoder_pull_frame(decoder, &frames_lost);
         if (!frame)
             return;
-        const double pull_ms = std::chrono::duration<double, std::milli>(
-            std::chrono::steady_clock::now() - pull_t0).count();
+        // Real decode cost is measured inside the lib around avcodec_send_packet
+        // on the decode thread. pull_frame itself is a non-blocking pop of
+        // avcodec's finished-frame queue (~µs), so timing it here yields a
+        // race-dependent 0.0ms most ticks.
+        const double decode_ms = chiaki_ffmpeg_decoder_get_last_decode_ms(decoder);
 
         static const QSet<int> zero_copy_formats = {
             AV_PIX_FMT_VULKAN,
@@ -826,7 +826,7 @@ void QmlBackend::createSession(const StreamSessionConnectInfo &connect_info)
 #endif
         StreamStatsProvider::instance().OnFrame(
             static_cast<quint32>(frame->width), static_cast<quint32>(frame->height),
-            pull_ms, xfer_ms, frames_lost);
+            decode_ms, xfer_ms, frames_lost);
         QMetaObject::invokeMethod(window, std::bind(&QmlMainWindow::presentFrame, window, frame, frames_lost));
     });
 

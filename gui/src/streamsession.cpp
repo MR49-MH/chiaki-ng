@@ -472,6 +472,14 @@ StreamSession::StreamSession(const StreamSessionConnectInfo &connect_info, QObje
 			average_packet_loss = packet_loss;
 			emit AveragePacketLossChanged();
 		}
+		// Baseline RTT from the Senkusha handshake; stable once measured,
+		// surfaced here so the debug HUD can show it next to packet loss.
+		const double rtt = session.rtt_us / 1000.0;
+		if(rtt != rtt_ms)
+		{
+			rtt_ms = rtt;
+			emit RttMsChanged();
+		}
 	});
 }
 

@@ -30,6 +30,7 @@ struct chiaki_ffmpeg_decoder_t
 	int32_t frames_lost;
 	bool frame_recovered;
 	int32_t session_bitrate_kbps;
+	double last_decode_ms;
 };
 
 CHIAKI_EXPORT ChiakiErrorCode chiaki_ffmpeg_decoder_init(ChiakiFfmpegDecoder *decoder, ChiakiLog *log,
@@ -38,6 +39,10 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_ffmpeg_decoder_init(ChiakiFfmpegDecoder *de
 CHIAKI_EXPORT void chiaki_ffmpeg_decoder_fini(ChiakiFfmpegDecoder *decoder);
 CHIAKI_EXPORT bool chiaki_ffmpeg_decoder_video_sample_cb(uint8_t *buf, size_t buf_size, int32_t frames_lost, bool frame_recovered, void *user);
 CHIAKI_EXPORT AVFrame *chiaki_ffmpeg_decoder_pull_frame(ChiakiFfmpegDecoder *decoder, int32_t *frames_lost);
+// Duration of the last avcodec_send_packet decode pass, in milliseconds.
+// Measured on the decode (video sample) thread; pull_frame only pops the
+// finished frame off avcodec's internal queue, so it cannot measure this.
+CHIAKI_EXPORT double chiaki_ffmpeg_decoder_get_last_decode_ms(ChiakiFfmpegDecoder *decoder);
 CHIAKI_EXPORT enum AVPixelFormat chiaki_ffmpeg_decoder_get_pixel_format(ChiakiFfmpegDecoder *decoder);
 
 #ifdef __cplusplus

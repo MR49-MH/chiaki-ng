@@ -6,6 +6,8 @@
 
 #include <QDateTime>
 
+#include <chrono>
+
 namespace {
 // std::atomic::fetch_max 是 C++26 特性，手写 CAS 循环替代。
 inline void atomic_fetch_max(std::atomic<quint32> &slot, quint32 val)
@@ -32,12 +34,23 @@ StreamStatsProvider::StreamStatsProvider(QObject *parent)
 }
 
 void StreamStatsProvider::OnFrame(quint32 width, quint32 height,
-		double pull_ms, double xfer_ms, qint32 frames_lost)
+		double decode_ms, double xfer_ms, qint32 frames_lost)
 {
+	// Frame pacing: interval between consecutive OnFrame calls. The max gap
+	// per refresh window exposes stutter that the average fps hides.
+	const auto now_us = static_cast<quint64>(
+		std::chrono::duration_cast<std::chrono::microseconds>(
+			std::chrono::steady_clock::now().time_since_epoch()).count());
+	const quint64 prev_frame = last_frame_us_.exchange(now_us, std::memory_order_relaxed);
+	if(prev_frame)
+	{
+		const auto gap_us = static_cast<quint32>(qMin<quint64>(now_us - prev_frame, UINT32_MAX));
+		atomic_fetch_max(gap_max_us_, gap_us);
+	}
 	frames_total_.fetch_add(1, std::memory_order_relaxed);
 	if(frames_lost > 0)
 		lost_total_.fetch_add(static_cast<quint64>(frames_lost), std::memory_order_relaxed);
-	const auto pull_us = static_cast<quint32>(pull_ms * 1000.0);
+	const auto pull_us = static_cast<quint32>(decode_ms * 1000.0);
 	pull_sum_us_.fetch_add(pull_us, std::memory_order_relaxed);
 	pull_count_.fetch_add(1, std::memory_order_relaxed);
 	pull_last_us_.store(pull_us, std::memory_order_relaxed);
@@ -84,14 +97,18 @@ void StreamStatsProvider::Refresh()
 	pull_ms_avg = pull_cnt ? (pull_sum / pull_cnt) / 1000.0 : 0.0;
 	pull_ms_max = pull_max / 1000.0;
 	pull_ms_last = pull_last_us_.load(std::memory_order_relaxed) / 1000.0;
+	// No hw->sw transfer this window (software decode or zero-copy path):
+	// expose a negative sentinel so QML can show "n/a" instead of 0.0 ms.
 	xfer_ms_max = xfer_max / 1000.0;
-	xfer_ms_last = xfer_last_us_.load(std::memory_order_relaxed) / 1000.0;
+	xfer_ms_last = xfer_cnt ? xfer_last_us_.load(std::memory_order_relaxed) / 1000.0 : -1.0;
 	frames_lost = lost_total_.load(std::memory_order_relaxed);
 
 	shm_active = pub.IsConfigured();
 	shm_dropped = pub.dropped_frames();
 	shm_queue = pub.StatQueueLen();
 	shm_write_ms = pub.StatWriteLastUs() / 1000.0;
+
+	gap_ms_max = gap_max_us_.exchange(0, std::memory_order_relaxed) / 1000.0;
 
 	stream_info = QStringLiteral("%1×%2  %3  %4")
 					  .arg(QString::number(last_w_.load(std::memory_order_relaxed)),
