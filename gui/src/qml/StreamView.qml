@@ -229,9 +229,11 @@ Item {
                 bottomMargin: 30
             }
             ColumnLayout {
+                // Anchor bottom-only: the host Label has no text (zero height),
+                // so anchoring top would collapse the layout and push every
+                // row off-screen. Bottom anchor lets the stack grow upwards.
                 anchors {
                     right: parent.right
-                    top: parent.top
                     bottom: parent.bottom
                     rightMargin: 5
                 }
@@ -277,6 +279,119 @@ Item {
                         }
                         text: visible ? Chiaki.window.droppedFrames : ""
                         color: "#ef9a9a" // Material.Red
+                        font.bold: true
+                        font.pixelSize: 18
+                    }
+                }
+
+                Label {
+                    id: statsFpsRow
+                    text: qsTr("fps")
+                    font.pixelSize: 15
+                    opacity: parent.visible
+                    visible: opacity
+
+                    Behavior on opacity { NumberAnimation { duration: 250 } }
+
+                    Label {
+                        anchors {
+                            right: parent.left
+                            baseline: parent.baseline
+                            rightMargin: 5
+                        }
+                        text: visible ? StreamStats.fps.toFixed(1) : ""
+                        color: Material.accent
+                        font.bold: true
+                        font.pixelSize: 18
+                    }
+                }
+
+                Label {
+                    id: statsPullRow
+                    text: qsTr("pull ms")
+                    font.pixelSize: 15
+                    opacity: parent.visible
+                    visible: opacity
+
+                    Behavior on opacity { NumberAnimation { duration: 250 } }
+
+                    Label {
+                        anchors {
+                            right: parent.left
+                            baseline: parent.baseline
+                            rightMargin: 5
+                        }
+                        text: visible ? "%1 / %2 / %3".arg(StreamStats.pullMsLast.toFixed(1)).arg(StreamStats.pullMsAvg.toFixed(1)).arg(StreamStats.pullMsMax.toFixed(1)) : ""
+                        color: Material.accent
+                        font.bold: true
+                        font.pixelSize: 18
+                    }
+                }
+
+                Label {
+                    id: statsXferRow
+                    text: qsTr("gpu→cpu ms")
+                    font.pixelSize: 15
+                    opacity: parent.visible
+                    visible: opacity
+
+                    Behavior on opacity { NumberAnimation { duration: 250 } }
+
+                    Label {
+                        anchors {
+                            right: parent.left
+                            baseline: parent.baseline
+                            rightMargin: 5
+                        }
+                        text: visible ? "%1 / %2".arg(StreamStats.xferMsLast.toFixed(1)).arg(StreamStats.xferMsMax.toFixed(1)) : ""
+                        color: Material.accent
+                        font.bold: true
+                        font.pixelSize: 18
+                    }
+                }
+
+                Label {
+                    id: statsShmRow
+                    text: qsTr("shm")
+                    font.pixelSize: 15
+                    opacity: parent.visible
+                    visible: opacity
+
+                    Behavior on opacity { NumberAnimation { duration: 250 } }
+
+                    Label {
+                        anchors {
+                            right: parent.left
+                            baseline: parent.baseline
+                            rightMargin: 5
+                        }
+                        text: visible ? (StreamStats.shmActive
+                                ? "%1fps q%2 w%3ms d%4".arg(StreamStats.shmFps.toFixed(0)).arg(StreamStats.shmQueue).arg(StreamStats.shmWriteMs.toFixed(1)).arg(StreamStats.shmDropped)
+                                : qsTr("off"))
+                            : ""
+                        color: StreamStats.shmActive ? "#a5d6a7" /* Material.Green */ : "#9e9e9e"
+                        font.bold: true
+                        font.pixelSize: 18
+                    }
+                }
+
+                Label {
+                    id: statsStreamRow
+                    text: qsTr("stream")
+                    font.pixelSize: 15
+                    opacity: parent.visible
+                    visible: opacity
+
+                    Behavior on opacity { NumberAnimation { duration: 250 } }
+
+                    Label {
+                        anchors {
+                            right: parent.left
+                            baseline: parent.baseline
+                            rightMargin: 5
+                        }
+                        text: visible ? StreamStats.streamInfo : ""
+                        color: Material.accent
                         font.bold: true
                         font.pixelSize: 18
                     }

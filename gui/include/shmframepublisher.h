@@ -53,6 +53,11 @@ class ShmFramePublisher
 		uint64_t published_frames() const { return published_frames_; }
 		uint64_t dropped_frames() const { return dropped_frames_; }
 
+		// ---- diagnostics for the StreamStats HUD (cheap, display only) ----
+		bool IsConfigured();                 // mapping exists and accepts frames
+		uint32_t StatQueueLen();             // frames waiting on the worker
+		uint64_t StatWriteLastUs() const { return last_write_us_.load(std::memory_order_relaxed); }
+
 	private:
 		ShmFramePublisher() = default;
 		~ShmFramePublisher();
@@ -80,6 +85,7 @@ class ShmFramePublisher
 		uint32_t plane_copy_bytes_[4] = {};
 		uint64_t published_frames_ = 0;
 		uint64_t dropped_frames_ = 0;
+		std::atomic<uint64_t> last_write_us_{0}; // duration of the last full publish pass (transfer+copy)
 
 		// Guards mapping lifetime and the seqlock write section. Held across
 		// configure/shutdown and the per-frame copy so a concurrent

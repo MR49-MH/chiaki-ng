@@ -422,9 +422,31 @@ void ShmFramePublisher::PublisherLoop()
 			qf = queue_.front();
 			queue_.pop_front();
 		}
+		const uint64_t t0 = qpc_now_us();
 		PublishSync(qf.frame, qf.pts_us);
+		last_write_us_.store(qpc_now_us() - t0, std::memory_order_relaxed);
 		av_frame_free(&qf.frame);
 	}
+#endif
+}
+
+bool ShmFramePublisher::IsConfigured()
+{
+#ifdef Q_OS_WINDOWS
+	std::lock_guard<std::mutex> lock(mutex_);
+	return configured_;
+#else
+	return false;
+#endif
+}
+
+uint32_t ShmFramePublisher::StatQueueLen()
+{
+#ifdef Q_OS_WINDOWS
+	std::lock_guard<std::mutex> lock(mutex_);
+	return static_cast<uint32_t>(queue_.size());
+#else
+	return 0;
 #endif
 }
 

@@ -50,6 +50,8 @@ set(SOURCE_FILES
 	src/qmlsvgprovider.cpp
 	include/shmframepublisher.h
 	src/shmframepublisher.cpp
+	include/streamstatsprovider.h
+	src/streamstatsprovider.cpp
 	include/systemdinhibit.h
 	src/systemdinhibit.cpp
 	)

@@ -8,6 +8,7 @@
 #include "systemdinhibit.h"
 #ifdef Q_OS_WINDOWS
 #include "shmframepublisher.h"
+#include "streamstatsprovider.h"
 #endif
 #include "chiaki/remote/holepunch.h"
 #if CHIAKI_GUI_ENABLE_STEAM_SHORTCUT
@@ -28,6 +29,8 @@
 #include <QProcessEnvironment>
 #include <QDesktopServices>
 #include <QtConcurrent>
+
+#include <chrono>
 
 #define PSN_DEVICES_TRIES 2
 #define MAX_PSN_RECONNECT_TRIES 6
@@ -107,6 +110,7 @@ QmlBackend::QmlBackend(Settings *settings, QmlMainWindow *window)
 
     const char *uri = "org.streetpea.chiaking";
     qmlRegisterSingletonInstance(uri, 1, 0, "Chiaki", this);
+    qmlRegisterSingletonInstance(uri, 1, 0, "StreamStats", &StreamStatsProvider::instance());
     qmlRegisterUncreatableType<QmlMainWindow>(uri, 1, 0, "ChiakiWindow", {});
     qmlRegisterUncreatableType<QmlSettings>(uri, 1, 0, "ChiakiSettings", {});
     qmlRegisterUncreatableType<StreamSession>(uri, 1, 0, "ChiakiSession", {});
@@ -768,6 +772,17 @@ void QmlBackend::createSession(const StreamSessionConnectInfo &connect_info)
     ShmFramePublisher::instance().set_enabled(settings->GetShmFrameOutput());
 #endif
 
+    {
+        const char *codec = "H264";
+        if(session_info.video_profile.codec == CHIAKI_CODEC_H265)
+            codec = "H265";
+        else if(session_info.video_profile.codec == CHIAKI_CODEC_H265_HDR)
+            codec = "H265 HDR";
+        StreamStatsProvider::instance().SetStreamInfo(
+            session_info.hw_decoder.isEmpty() ? QStringLiteral("sw") : session_info.hw_decoder,
+            QLatin1String(codec));
+    }
+
     connect(session, &StreamSession::FfmpegFrameAvailable, frame_thread->parent(), [this]() {
         ChiakiFfmpegDecoder *decoder = session->GetFfmpegDecoder();
         if (!decoder) {
@@ -775,9 +790,12 @@ void QmlBackend::createSession(const StreamSessionConnectInfo &connect_info)
             return;
         }
         int32_t frames_lost;
+        const auto pull_t0 = std::chrono::steady_clock::now();
         AVFrame *frame = chiaki_ffmpeg_decoder_pull_frame(decoder, &frames_lost);
         if (!frame)
             return;
+        const double pull_ms = std::chrono::duration<double, std::milli>(
+            std::chrono::steady_clock::now() - pull_t0).count();
 
         static const QSet<int> zero_copy_formats = {
             AV_PIX_FMT_VULKAN,
@@ -785,14 +803,18 @@ void QmlBackend::createSession(const StreamSessionConnectInfo &connect_info)
             AV_PIX_FMT_VAAPI,
 #endif
         };
+        double xfer_ms = -1.0; // <0: no GPU->CPU transfer happened this frame
         if (frame->hw_frames_ctx && (!zero_copy_formats.contains(frame->format) || disable_zero_copy)) {
             AVFrame *sw_frame = av_frame_alloc();
+            const auto xfer_t0 = std::chrono::steady_clock::now();
             if (av_hwframe_transfer_data(sw_frame, frame, 0) < 0) {
                 qCWarning(chiakiGui) << "Failed to transfer frame from hardware";
                 av_frame_unref(frame);
                 av_frame_free(&sw_frame);
                 return;
             }
+            xfer_ms = std::chrono::duration<double, std::milli>(
+                std::chrono::steady_clock::now() - xfer_t0).count();
             av_frame_copy_props(sw_frame, frame);
             av_frame_unref(frame);
             frame = sw_frame;
@@ -802,6 +824,9 @@ void QmlBackend::createSession(const StreamSessionConnectInfo &connect_info)
         // Publish raw decoded frame to shared memory before presentation takes ownership.
         ShmFramePublisher::instance().publish(frame, frame->pts);
 #endif
+        StreamStatsProvider::instance().OnFrame(
+            static_cast<quint32>(frame->width), static_cast<quint32>(frame->height),
+            pull_ms, xfer_ms, frames_lost);
         QMetaObject::invokeMethod(window, std::bind(&QmlMainWindow::presentFrame, window, frame, frames_lost));
     });
 
