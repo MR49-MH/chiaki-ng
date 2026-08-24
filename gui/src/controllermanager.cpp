@@ -133,6 +133,7 @@ static ControllerManager *instance = nullptr;
 #define MOVE_CHECK_MS 1000
 
 #ifdef Q_OS_WIN
+#include <windows.h>
 #include <timeapi.h>
 #endif
 
