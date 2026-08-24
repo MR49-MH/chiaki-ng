@@ -2423,6 +2423,25 @@ DialogView {
                                 text: qsTr("(console setting)")
                             }
                         }
+                        RowLayout {
+                            spacing: 10
+                            Layout.alignment: Qt.AlignHCenter
+                            Label {
+                                Layout.alignment: Qt.AlignRight
+                                text: qsTr("High Precision Controller Mode:")
+                            }
+
+                            C.CheckBox {
+                                id: controllerHighPrecision
+                                checked: Chiaki.settings.controllerHighPrecision
+                                onToggled: Chiaki.settings.controllerHighPrecision = !Chiaki.settings.controllerHighPrecision
+                            }
+
+                            Label {
+                                Layout.alignment: Qt.AlignRight
+                                text: qsTr("(Unchecked, 1ms polling + timer resolution)")
+                            }
+                        }
                     }
                 }
             }

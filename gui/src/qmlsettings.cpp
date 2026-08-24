@@ -1,5 +1,6 @@
 #include "qmlsettings.h"
 #include "sessionlog.h"
+#include "controllermanager.h"
 
 #include <QSet>
 #include <QKeySequence>
@@ -68,6 +69,18 @@ void QmlSettings::setShowStreamStats(bool enabled)
 {
     settings->SetShowStreamStats(enabled);
     emit showStreamStatsChanged();
+}
+
+bool QmlSettings::controllerHighPrecision() const
+{
+    return settings->GetControllerHighPrecision();
+}
+
+void QmlSettings::setControllerHighPrecision(bool enabled)
+{
+    settings->SetControllerHighPrecision(enabled);
+    ControllerManager::GetInstance()->SetHighPrecisionMode(enabled);
+    emit controllerHighPrecisionChanged();
 }
 
 bool QmlSettings::streamerMode() const

@@ -143,6 +143,7 @@ QmlBackend::QmlBackend(Settings *settings, QmlMainWindow *window)
     discovery_manager.SetSettings(settings);
     setDiscoveryEnabled(true);
     connect(ControllerManager::GetInstance(), &ControllerManager::AvailableControllersUpdated, this, &QmlBackend::updateControllers);
+    ControllerManager::GetInstance()->SetHighPrecisionMode(settings->GetControllerHighPrecision());
     connect(settings_qml, &QmlSettings::allowJoystickBackgroundEventsChanged, this, &QmlBackend::setAllowJoystickBackgroundEvents);
     connect(window, &QmlMainWindow::activeChanged, this, &QmlBackend::setIsAppActive);
     setAllowJoystickBackgroundEvents();

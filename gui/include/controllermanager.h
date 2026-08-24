@@ -37,6 +37,8 @@ class ControllerManager : public QObject
 		bool is_app_active;
 		bool moved;
 		uint8_t dualsense_intensity;
+		QTimer *event_timer = nullptr;
+		bool high_precision_mode = false;
 
 		void ControllerClosed(Controller *controller);
 		void CheckMoved();
@@ -56,6 +58,10 @@ class ControllerManager : public QObject
 		void SetButtonsByPos();
 		void SetAllowJoystickBackgroundEvents(bool enabled);
 		void SetIsAppActive(bool active);
+		// High precision input mode: 1ms SDL polling interval and, on
+		// Windows, a process-wide 1ms kernel timer resolution so the
+		// polling timer actually fires at its requested interval.
+		void SetHighPrecisionMode(bool enabled);
 		void SetDualSenseIntensity(uint8_t intensity) { dualsense_intensity = intensity; };
 		uint8_t GetDualSenseIntensity() { return dualsense_intensity; };
 		void creatingControllerMapping(bool creating_controller_mapping);

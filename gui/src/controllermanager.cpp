@@ -129,7 +129,12 @@ static QSet<QPair<uint16_t, uint16_t>> chiaki_steam_virtual_controller_ids({
 static ControllerManager *instance = nullptr;
 
 #define UPDATE_INTERVAL_MS 4
+#define HIGH_PRECISION_INTERVAL_MS 1
 #define MOVE_CHECK_MS 1000
+
+#ifdef Q_OS_WIN
+#include <timeapi.h>
+#endif
 
 ControllerManager *ControllerManager::GetInstance()
 {
@@ -156,6 +161,7 @@ ControllerManager::ControllerManager(QObject *parent)
 	auto timer = new QTimer(this);
 	connect(timer, &QTimer::timeout, this, &ControllerManager::HandleEvents);
 	timer->start(UPDATE_INTERVAL_MS);
+	event_timer = timer;
 	auto move_timer = new QTimer(this);
 	connect(move_timer, &QTimer::timeout, this, &ControllerManager::CheckMoved);
 	move_timer->start(MOVE_CHECK_MS);
@@ -189,6 +195,27 @@ void ControllerManager::CheckMoved()
 void ControllerManager::SetIsAppActive(bool active)
 {
 	this->is_app_active = active;
+}
+
+void ControllerManager::SetHighPrecisionMode(bool enabled)
+{
+	if(enabled == high_precision_mode)
+		return;
+	high_precision_mode = enabled;
+#ifdef CHIAKI_GUI_ENABLE_SDL_GAMECONTROLLER
+	if(event_timer)
+		event_timer->start(enabled ? HIGH_PRECISION_INTERVAL_MS : UPDATE_INTERVAL_MS);
+#endif
+#ifdef Q_OS_WIN
+	// Per-process since Windows 10 2004: only THIS process gets 1ms timer
+	// resolution; external tools calling timeBeginPeriod have no effect here.
+	// Without it, waits round up to the ~15.6ms default system tick and the
+	// polling timer fires late regardless of its requested interval.
+	if(enabled)
+		timeBeginPeriod(1);
+	else
+		timeEndPeriod(1);
+#endif
 }
 
 void ControllerManager::SetButtonsByPos()
