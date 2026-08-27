@@ -23,6 +23,7 @@ class Preferences(context: Context)
 		RES_360P("360p", R.string.preferences_resolution_title_360p, VideoResolutionPreset.RES_360P),
 		RES_540P("540p", R.string.preferences_resolution_title_540p, VideoResolutionPreset.RES_540P),
 		RES_720P("720p", R.string.preferences_resolution_title_720p, VideoResolutionPreset.RES_720P),
+		RES_900P("900p", R.string.preferences_resolution_title_900p, VideoResolutionPreset.RES_900P),
 		RES_1080P("1080p", R.string.preferences_resolution_title_1080p, VideoResolutionPreset.RES_1080P),
 	}
 

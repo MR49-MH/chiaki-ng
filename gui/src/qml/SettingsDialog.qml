@@ -919,7 +919,7 @@ DialogView {
                     C.ComboBox {
                         id: resolutionLocalPS4
                         Layout.preferredWidth: 400
-                        model: [qsTr("360p"), qsTr("540p"), qsTr("720p (Default)"), qsTr("1080p (PS5 and PS4 Pro)")]
+                        model: [qsTr("360p"), qsTr("540p"), qsTr("720p (Default)"), qsTr("1080p (PS5 and PS4 Pro)"), qsTr("900p")]
                         currentIndex: Chiaki.settings.resolutionLocalPS4 - 1
                         onActivated: (index) => {
                             Chiaki.settings.resolutionLocalPS4 = index + 1
@@ -940,7 +940,7 @@ DialogView {
                     C.ComboBox {
                         id: resolutionRemotePS4
                         Layout.preferredWidth: 400
-                        model: [qsTr("360p"), qsTr("540p"), qsTr("720p (Default)"), qsTr("1080p (PS5 and PS4 Pro)")]
+                        model: [qsTr("360p"), qsTr("540p"), qsTr("720p (Default)"), qsTr("1080p (PS5 and PS4 Pro)"), qsTr("900p")]
                         currentIndex: Chiaki.settings.resolutionRemotePS4 - 1
                         onActivated: (index) => {
                             Chiaki.settings.resolutionRemotePS4 = index + 1
@@ -961,7 +961,7 @@ DialogView {
                     C.ComboBox {
                         id: resolutionLocalPS5
                         Layout.preferredWidth: 400
-                        model: [qsTr("360p"), qsTr("540p"), qsTr("720p"), qsTr("1080p (Default)")]
+                        model: [qsTr("360p"), qsTr("540p"), qsTr("720p"), qsTr("1080p (Default)"), qsTr("900p")]
                         currentIndex: Chiaki.settings.resolutionLocalPS5 - 1
                         onActivated: (index) => {
                             Chiaki.settings.resolutionLocalPS5 = index + 1
@@ -982,7 +982,7 @@ DialogView {
                     C.ComboBox {
                         id: resolutionRemotePS5
                         Layout.preferredWidth: 400
-                        model: [qsTr("360p"), qsTr("540p"), qsTr("720p (Default)"), qsTr("1080p")]
+                        model: [qsTr("360p"), qsTr("540p"), qsTr("720p (Default)"), qsTr("1080p"), qsTr("900p")]
                         currentIndex: Chiaki.settings.resolutionRemotePS5 - 1
                         onActivated: (index) => {
                             Chiaki.settings.resolutionRemotePS5 = index + 1
@@ -1092,6 +1092,7 @@ DialogView {
                             case 2: rate = 6; break; // 540p
                             case 3: rate = 10; break; // 720p
                             case 4: rate = 15; break; // 1080p
+                            case 5: rate = 12; break; // 900p
                             }
                             return rate;
                         }
@@ -1124,6 +1125,7 @@ DialogView {
                             case 2: rate = 6; break; // 540p
                             case 3: rate = 10; break; // 720p
                             case 4: rate = 15; break; // 1080p
+                            case 5: rate = 12; break; // 900p
                             }
                             return rate;
                         }
@@ -1158,6 +1160,7 @@ DialogView {
                             case 2: rate = 6; break; // 540p
                             case 3: rate = 10; break; // 720p
                             case 4: rate = 15; break; // 1080p
+                            case 5: rate = 12; break; // 900p
                             }
                             return rate;
                         }
@@ -1191,6 +1194,7 @@ DialogView {
                             case 2: rate = 6; break; // 540p
                             case 3: rate = 10; break; // 720p
                             case 4: rate = 15; break; // 1080p
+                            case 5: rate = 12; break; // 900p
                             }
                             return rate;
                         }

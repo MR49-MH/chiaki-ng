@@ -80,6 +80,7 @@
     <string name="preferences_resolution_title_360p">360p</string>
     <string name="preferences_resolution_title_540p">540p</string>
     <string name="preferences_resolution_title_720p">720p</string>
+    <string name="preferences_resolution_title_900p">900p</string>
     <string name="preferences_resolution_title_1080p">1080p</string>
     <string name="preferences_fps_title_30">30</string>
     <string name="preferences_fps_title_60">60</string>
